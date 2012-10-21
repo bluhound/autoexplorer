@@ -1,0 +1,49 @@
+// Grab the text from the textBox and save it to a file
+    String outTextToSave = textBox.getText();   
+    
+    JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showSaveDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+          File selectedFile = fileChooser.getSelectedFile();
+          System.out.println(selectedFile.getName());
+                new FileOption().setVisible(true);
+             
+    File newFile = new File(selectedFile.getName());
+        try {
+            PrintWriter pwFile = new PrintWriter(newFile);
+            pwFile.println(outTextToSave);
+            pwFile.close();
+            System.out.printf("File was Saved");
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(NotePad.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        } 
+
+//Open a file for editing.
+JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+        
+        File selectedFile = fileChooser.getSelectedFile();
+        System.out.println(selectedFile.getName());
+        fileChooser.setVisible(true);
+             
+    File newFileToRead = new File(selectedFile.getName());
+        try {
+                    FileReader fr = new FileReader(newFileToRead);
+                    BufferedReader bufRdr = new BufferedReader(fr);
+                    
+                    String line = null;
+                    while ((line = bufRdr.readLine()) != null){
+                        jTextArea1.append(line);
+                        jTextArea1.append("\n");
+                    }
+                    bufRdr.close();
+                    
+                } catch (IOException ioex) {
+                    System.err.println(ioex);
+                    System.exit(1);
+                }  // TODO add your handling code here:
+    }       
+
