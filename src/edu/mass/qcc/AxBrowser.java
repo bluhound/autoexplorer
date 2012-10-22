@@ -37,7 +37,14 @@ public class AxBrowser {
     public String newline = "\n";
     public String home = "http://www.google.com";
     public String delim = "::";
+    public String[] tkString;
+    public String eValue;
+    int TAGNAME = 1;
+    int ID = 2;
+    int VALUE = 5;
+    Boolean captureInput = false;
     autoexplorer ax;
+    Document document;
     
     AxBrowser(autoexplorer Ax){
     //Get a new browser
@@ -244,13 +251,32 @@ public class AxBrowser {
         browser.addNavigationListener(new NavigationListener() {
             @Override
         public void navigationStarted(final NavigationEvent event) {
-         SwingUtilities.invokeLater(new Runnable() {
+        //Check if any data needs to be captured before leaving...
+                if (captureInput) {
+                    
+                    document = browser.getDocument();
+                    
+                    //tkString[ID] is the id of the element
+                    if (!("<null>".matches(tkString[ID]))){
+                        System.out.print("\n<---Found element id - trying to capture--->"+tkString[2]+"\n");
+                        DOMElement documentElement = (DOMElement) document.getElementById(tkString[ID]);
+                        eValue = documentElement.getAttribute("value");
+                        System.out.print("Captured Value for Element: " + eValue);
+                        
+                        //Turn off capturing.
+                        captureInput = false;
+                    }
+                    
+                
+                SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                //ax.addressBar.setText(event.getUrl());
-            }
-        });
-         
+                ax.consoleTextArea.setText(tkString[0] + delim + tkString[1] + delim + tkString[2] + delim + tkString[3] + delim + tkString[4] + delim + eValue + delim);
+            
+                }
+                
+              });
+                }
               
         }
 
@@ -442,6 +468,7 @@ public class AxBrowser {
                 }
                 //Input Element
                 else if (("input").equals(tagName)){
+                //Alert that we will need to capture the text
                 
                 String iName = target.getAttribute("name");
                 String iType = target.getAttribute("type");
@@ -453,12 +480,13 @@ public class AxBrowser {
                 if ("".equals(iId)) {iId = "<null>";}
                 
                 tokenString = ("<Click Input>::" + tagName + delim + iId + delim + iName + delim + iType + delim + iValue + delim);
-                SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                ax.consoleTextArea.setText(tokenString);
-            }
-        });
+                
+                //Alert that we will need to capture the text
+                captureInput = true;
+                
+                //Send our split token[]'s
+                tkString = tokenString.split(delim); //For use by navigater listener...
+                
                 }
                 
                 
