@@ -247,7 +247,7 @@ public class AxBrowser {
          SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                ax.addressBar.setText(event.getUrl());
+                //ax.addressBar.setText(event.getUrl());
             }
         });
          
@@ -258,13 +258,13 @@ public class AxBrowser {
         public void navigationFinished(NavigationFinishedEvent event) {
         
                
-        
+        ax.addressBar.setText(event.getUrl());
         //Grab the new HTML for the current page.........
         final String HTMLstring = browser.getContent();
         SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                ax.HTMLTextArea1.setText(HTMLstring);
+                ax.HTMLTextArea1.append(HTMLstring);
             }
         });
         
@@ -521,17 +521,7 @@ public class AxBrowser {
                             }
                 });
         
-        
-        
-    ///End
-        
-        
-        
-        
-        
-        
-        
-        }//close brace for open()
+        }
    
         
           
