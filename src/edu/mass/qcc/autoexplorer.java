@@ -25,6 +25,8 @@ public class autoexplorer extends javax.swing.JFrame {
     String delim = "::";
     Browser browser;
     AxBrowser axBrowser;
+    Recorder recorder;
+    MyFile myFile;
     /**
      * Creates new form autoexplorer
      */
@@ -35,7 +37,7 @@ public class autoexplorer extends javax.swing.JFrame {
         
         
         //Get a new browser
-         browser = BrowserFactory.createBrowser(BrowserType.Mozilla);
+         browser = BrowserFactory.createBrowser(BrowserType.getPlatformSpecificBrowser());
         //Make sure browser doesn't hang on javascript error
          browser.getServices().setPromptService(new DefaultPromptService(){
             @Override
@@ -43,12 +45,15 @@ public class autoexplorer extends javax.swing.JFrame {
                 return CloseStatus.OK;
             }
         });
+        
         //Now that gui and browser are setup,
         //grab an axbrowser to set all listeners
         //and to process clicks on elements
         axBrowser = new AxBrowser(this);
         axBrowser.open();
-            
+        jSplitPane1.setResizeWeight(.5); 
+        recordingLabel.setVisible(false);
+        
     }
     
     /**
@@ -67,24 +72,25 @@ public class autoexplorer extends javax.swing.JFrame {
         homeButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         forwardButton = new javax.swing.JButton();
-        addressBar = new javax.swing.JTextField();
+        addressBar = new java.awt.TextField();
         goButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
         stopBrowserButton = new javax.swing.JButton();
-        searchField = new javax.swing.JTextField();
+        searchField = new java.awt.TextField();
         recordButton = new javax.swing.JButton();
         stopRecordButton = new javax.swing.JButton();
         playButton = new javax.swing.JButton();
         pauseButton = new javax.swing.JButton();
+        recordingLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jToolBar2 = new javax.swing.JToolBar();
         jLabel2 = new javax.swing.JLabel();
         statusLabel = new javax.swing.JLabel();
-        consolePane = new javax.swing.JScrollPane();
         jSplitPane1 = new javax.swing.JSplitPane();
-        consoleTextArea = new javax.swing.JTextArea();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
         scriptTextArea = new javax.swing.JTextArea();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        consoleTextArea = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         openFileMenuOption = new javax.swing.JMenuItem();
@@ -102,10 +108,12 @@ public class autoexplorer extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Autoexplorer Alpha-Version 0.25");
+        setTitle("Autoexplorer Alpha-Version 0.47");
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1200, 700));
+        setName("Main"); // NOI18N
 
+        browserPane.setBorder(javax.swing.BorderFactory.createTitledBorder("Browser"));
         browserPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         browserPane.setAutoscrolls(true);
         browserPane.setMinimumSize(new java.awt.Dimension(40, 400));
@@ -117,6 +125,7 @@ public class autoexplorer extends javax.swing.JFrame {
         HTMLTextArea1.setColumns(20);
         HTMLTextArea1.setLineWrap(true);
         HTMLTextArea1.setRows(5);
+        HTMLTextArea1.setWrapStyleWord(true);
         HTMLTextArea1.setMinimumSize(new java.awt.Dimension(104, 400));
         HTMLTextArea1.setPreferredSize(new java.awt.Dimension(1150, 400));
         jScrollPane2.setViewportView(HTMLTextArea1);
@@ -125,7 +134,7 @@ public class autoexplorer extends javax.swing.JFrame {
 
         getContentPane().add(browserPane, java.awt.BorderLayout.CENTER);
 
-        jToolBar1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jToolBar1.setBorder(null);
         jToolBar1.setRollover(true);
         jToolBar1.setOpaque(false);
         jToolBar1.setRequestFocusEnabled(false);
@@ -148,18 +157,13 @@ public class autoexplorer extends javax.swing.JFrame {
         forwardButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(forwardButton);
 
+        addressBar.setFont(new java.awt.Font("DialogInput", 0, 12)); // NOI18N
+        addressBar.setName(""); // NOI18N
+        addressBar.setPreferredSize(new java.awt.Dimension(500, 20));
         addressBar.setText("http://");
-        addressBar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        addressBar.setMinimumSize(new java.awt.Dimension(400, 25));
-        addressBar.setPreferredSize(new java.awt.Dimension(600, 25));
         addressBar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addressBarMouseClicked(evt);
-            }
-        });
-        addressBar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                addressBarKeyPressed(evt);
             }
         });
         jToolBar1.add(addressBar);
@@ -177,6 +181,11 @@ public class autoexplorer extends javax.swing.JFrame {
         refreshButton.setMinimumSize(new java.awt.Dimension(39, 39));
         refreshButton.setPreferredSize(new java.awt.Dimension(39, 39));
         refreshButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
         jToolBar1.add(refreshButton);
 
         stopBrowserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/stop_2.png"))); // NOI18N
@@ -185,14 +194,13 @@ public class autoexplorer extends javax.swing.JFrame {
         stopBrowserButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(stopBrowserButton);
 
-        searchField.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
-        searchField.setForeground(new java.awt.Color(102, 102, 102));
-        searchField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        searchField.setPreferredSize(new java.awt.Dimension(200, 20));
         searchField.setText("google search");
-        searchField.setToolTipText("Type ");
-        searchField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        searchField.setMinimumSize(new java.awt.Dimension(150, 25));
-        searchField.setPreferredSize(new java.awt.Dimension(250, 25));
+        searchField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchFieldMouseClicked(evt);
+            }
+        });
         jToolBar1.add(searchField);
 
         recordButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/record.png"))); // NOI18N
@@ -229,6 +237,12 @@ public class autoexplorer extends javax.swing.JFrame {
         pauseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(pauseButton);
 
+        recordingLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        recordingLabel.setForeground(new java.awt.Color(255, 0, 51));
+        recordingLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/Record.gif"))); // NOI18N
+        recordingLabel.setText("Recording");
+        jToolBar1.add(recordingLabel);
+
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -249,42 +263,36 @@ public class autoexplorer extends javax.swing.JFrame {
         statusLabel.setPreferredSize(new java.awt.Dimension(248, 31));
         jToolBar2.add(statusLabel);
 
-        consolePane.setBackground(new java.awt.Color(255, 255, 255));
-        consolePane.setPreferredSize(new java.awt.Dimension(204, 125));
+        scriptTextArea.setColumns(20);
+        scriptTextArea.setLineWrap(true);
+        scriptTextArea.setRows(5);
+        scriptTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder("Script"));
+        jScrollPane3.setViewportView(scriptTextArea);
 
-        jSplitPane1.setToolTipText("This is where jRuby scripts are generated");
-        jSplitPane1.setPreferredSize(new java.awt.Dimension(202, 165));
+        jSplitPane1.setRightComponent(jScrollPane3);
 
         consoleTextArea.setColumns(20);
         consoleTextArea.setLineWrap(true);
         consoleTextArea.setRows(5);
-        consoleTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Console", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-        jSplitPane1.setLeftComponent(consoleTextArea);
+        consoleTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder("Console"));
+        jScrollPane1.setViewportView(consoleTextArea);
 
-        scriptTextArea.setColumns(10);
-        scriptTextArea.setLineWrap(true);
-        scriptTextArea.setRows(25);
-        scriptTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder("Script"));
-        jScrollPane1.setViewportView(scriptTextArea);
-
-        jSplitPane1.setRightComponent(jScrollPane1);
-
-        consolePane.setViewportView(jSplitPane1);
+        jSplitPane1.setLeftComponent(jScrollPane1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 1226, Short.MAX_VALUE)
-            .addComponent(consolePane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1226, Short.MAX_VALUE)
+            .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(consolePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jSplitPane1)
+                .addGap(1, 1, 1)
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_END);
@@ -375,16 +383,16 @@ public class autoexplorer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void openFileMenuOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileMenuOptionActionPerformed
-        MyFile myFileOpen = new MyFile(this);
-        myFileOpen.open();
+        myFile = new MyFile(this);
+        myFile.open();
          
 
 
     }//GEN-LAST:event_openFileMenuOptionActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-    MyFile myFileClose = new MyFile(this);
-    myFileClose.saveas();
+        myFile = new MyFile(this);
+        myFile.saveas();
     
         
         
@@ -394,7 +402,7 @@ public class autoexplorer extends javax.swing.JFrame {
         //Hide or display console/script pane
         if (!CheckBoxShowConsole.isSelected()){
             
-            consolePane.setVisible(false);
+            jSplitPane1.setVisible(false);
         
         }
         else {
@@ -403,7 +411,7 @@ public class autoexplorer extends javax.swing.JFrame {
 
                         @Override
                         public void run() {
-                consolePane.setVisible(true);
+                jSplitPane1.setVisible(true);
                             }
                 }); 
             
@@ -418,32 +426,27 @@ public class autoexplorer extends javax.swing.JFrame {
         op.setDefaultCloseOperation(HIDE_ON_CLOSE);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void addressBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addressBarMouseClicked
-        SwingUtilities.invokeLater(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            
-               //addressBar.requestFocus();
-                 addressBar.selectAll();
-                            }
-                });         
-        
-    }//GEN-LAST:event_addressBarMouseClicked
-
-    private void addressBarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addressBarKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addressBarKeyPressed
-
     private void stopRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopRecordButtonActionPerformed
-        Recorder recorder = new Recorder(this);
         recorder.stopRecording();
     }//GEN-LAST:event_stopRecordButtonActionPerformed
 
     private void recordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordButtonActionPerformed
-        Recorder recorder = new Recorder(this);
+        recorder = new Recorder(this);
         recorder.startRecording();
     }//GEN-LAST:event_recordButtonActionPerformed
+
+    private void addressBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addressBarMouseClicked
+        addressBar.selectAll();
+    }//GEN-LAST:event_addressBarMouseClicked
+
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        browser.navigate(addressBar.getText());
+        
+    }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void searchFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchFieldMouseClicked
+        searchField.selectAll();
+    }//GEN-LAST:event_searchFieldMouseClicked
 
     /**
      * @param args the command line arguments
@@ -483,11 +486,10 @@ public class autoexplorer extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JCheckBoxMenuItem CheckBoxShowConsole;
     public javax.swing.JTextArea HTMLTextArea1;
-    public javax.swing.JTextField addressBar;
+    public java.awt.TextField addressBar;
     public javax.swing.JButton backButton;
     public javax.swing.JTabbedPane browserPane;
     public javax.swing.JMenuItem closeFileMenuOption;
-    public javax.swing.JScrollPane consolePane;
     public javax.swing.JTextArea consoleTextArea;
     public javax.swing.JButton forwardButton;
     public javax.swing.JButton goButton;
@@ -508,6 +510,7 @@ public class autoexplorer extends javax.swing.JFrame {
     public javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     public javax.swing.JSplitPane jSplitPane1;
     public javax.swing.JToolBar jToolBar1;
     public javax.swing.JToolBar jToolBar2;
@@ -515,9 +518,10 @@ public class autoexplorer extends javax.swing.JFrame {
     public javax.swing.JButton pauseButton;
     public javax.swing.JButton playButton;
     public javax.swing.JButton recordButton;
+    public javax.swing.JLabel recordingLabel;
     public javax.swing.JButton refreshButton;
     public javax.swing.JTextArea scriptTextArea;
-    public javax.swing.JTextField searchField;
+    public java.awt.TextField searchField;
     public javax.swing.JLabel statusLabel;
     public javax.swing.JButton stopBrowserButton;
     public javax.swing.JButton stopRecordButton;
