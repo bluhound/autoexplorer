@@ -173,6 +173,7 @@ public class Recorder implements DocumentListener {
             }
             else if (parseTokens[INPUT].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
+                pt = ("jrScript.find(\"input\").with(\"id=='"+ token[2] + "'\").set(\"value=='"+ token[5] + "'\").click()");
                 return (pt);
             }
             else if (parseTokens[OPTION].matches(pt)){
@@ -211,7 +212,7 @@ public class Recorder implements DocumentListener {
                 
                 System.out.print("Generating Script for: " + pt);
                 //jRuby watij script
-                pt = ("jrScript.open(\"" + token[1] + "\");");
+                pt = ("jrScript.open(\"" + token[1] + "\")");
                 return (pt);
             }
             else if (parseTokens[HOME].matches(pt)){
