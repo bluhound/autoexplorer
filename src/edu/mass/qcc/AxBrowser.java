@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.mass.qcc;
 
 import com.teamdev.jxbrowser.Browser;
@@ -28,15 +24,15 @@ import org.w3c.dom.html.HTMLElement;
 
 /**
  *
- * @author Ian
+ * @author Ian Hickey
  */
 public class AxBrowser {
     //Common Variables
     public Browser browser;
-    public String tokenString = "";
-    public String newline = "\n";
-    public String home = "http://www.google.com";
-    public String delim = "::";
+    public String  tokenString = "";
+    public String  newline = "\n";
+    public String  home = "http://www.google.com";
+    public String  delim = "::";
     public String[] tkString;
     public String eValue;
     int TAGNAME = 1;

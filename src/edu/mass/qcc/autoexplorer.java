@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.mass.qcc;
 
 import com.teamdev.jxbrowser.Browser;
@@ -16,19 +12,36 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 /**
  *
- * @author Ian
- */
+ * @authors 
+ *  Contributors to this project include:
+ *  Quinsigamond Community College, CSC207
+ *  Project Leader and Instructor: Professor Hao Loi
+ *  Project Managers: Alan Levin
+ * 
+ *  Team Leader:            Ian Hickey
+ *  Team: Khem Bastola,     Naishadh Patel,   Nhut Ta, 
+ *        John Donas,       Chris Mitchell,   Em Trieu, 
+ *        Jeremiah Johnson, Naishadh Amin,    Julion DeVincentis 
+ */  
+ /* This is the class that is associated with our
+  * license from Teamdev Ltd. and needs to remain
+  * named autoexplorer.java, this is also the central
+  * entry point to the program and launched the GUI.
+  */
+
 public class autoexplorer extends javax.swing.JFrame {
+    
     String tokenString = "";
-    String newline = "\n";
-    String home = "http://www.google.com";
-    String delim = "::";
-    Browser browser;
-    AxBrowser axBrowser;
-    Recorder recorder;
+    String newline     = "\n";
+    String home        = "http://www.google.com";
+    String delim       = "::";
+   Browser browser;
+ AxBrowser axBrowser;
+  Recorder recorder;
     MyFile myFile;
+    
     /**
-     * Creates new form autoexplorer
+     * Starts the GUI 
      */
     public autoexplorer() {
         
@@ -36,9 +49,12 @@ public class autoexplorer extends javax.swing.JFrame {
         System.setProperty("teamdev.license.info", "true");
         
         
-        //Get a new browser
+        //Get a new browser. The browser that is returned will depend
+        //on which OS is installed on the users computer.
+        
          browser = BrowserFactory.createBrowser(BrowserType.getPlatformSpecificBrowser());
-        //Make sure browser doesn't hang on javascript error
+        
+         //Make sure browser doesn't hang on javascript error
          browser.getServices().setPromptService(new DefaultPromptService(){
             @Override
             public CloseStatus scriptErrorRequested(ScriptErrorParams params) {
@@ -48,7 +64,15 @@ public class autoexplorer extends javax.swing.JFrame {
         
         //Now that gui and browser are setup,
         //grab an axbrowser to set all listeners
-        //and to process clicks on elements
+        //and start processing, clicks and type on elements.
+        /*
+         * AxBrowser does much of the heavy lifting such as
+         * attaching all click listeners that pertain to elements
+         * and sending clicked Tags, as string Tokens to the 
+         * Recording class which does the token parsing and 
+         * generates the scripts.
+         * 
+         */ 
         axBrowser = new AxBrowser(this);
         axBrowser.open();
         jSplitPane1.setResizeWeight(.5); 
@@ -421,9 +445,9 @@ public class autoexplorer extends javax.swing.JFrame {
     }//GEN-LAST:event_CheckBoxShowConsoleActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        OptionPane op = new OptionPane();
-        op.setVisible(true);
-        op.setDefaultCloseOperation(HIDE_ON_CLOSE);
+OptionPane op = new OptionPane();
+           op.setVisible(true);
+           op.setDefaultCloseOperation(HIDE_ON_CLOSE);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void stopRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopRecordButtonActionPerformed
