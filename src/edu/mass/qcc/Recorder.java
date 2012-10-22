@@ -4,7 +4,6 @@
  */
 package edu.mass.qcc;
 
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
@@ -16,7 +15,7 @@ import javax.swing.text.Document;
  *
  * @author Ian
  */
-public class Recorder {
+public class Recorder implements DocumentListener {
     //Recorder Tokens
     String[] parseTokens ={"<Click Anchor>", "<Click Frame>", "<Click Image>", "<Click Link>",
                            "<Click Span>",  "<Click Button>", "<Click Div>", "<Click Form>",
@@ -46,10 +45,11 @@ public class Recorder {
     int HOME = 18;
     int TEXTAREA = 19;
     
-    
+    Boolean recording = false;
     autoexplorer ax;
     public Document doc;
-    public DocumentListener documentListener;
+    DocumentListener documentListener;
+    
     
     
     /*Recorder simple takes control of the GUI so
@@ -61,49 +61,17 @@ public class Recorder {
     }
     
     public int startRecording(){
+        //TODO add a check to see if we are already recordnig!
         
         //Setup listener on console
         System.out.print("\nGrab Listener--->");
-        this.documentListener = new DocumentListener() {
-
-            @Override
-            public void insertUpdate(DocumentEvent de) {
-                
-               
-               
-               SwingUtilities.invokeLater(new Runnable() {
-
-                        @Override
-                        public void run() {
-                System.out.print("\nInsertUpdate--->");
-                           
-                String newText = ax.consoleTextArea.getText();
-               
-                String tpString = tokenParse(newText); 
-                
-                ax.scriptTextArea.append("\n" + tpString);
-                            }
-                });
-               
-                          
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent de) {
-                //throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent de) {
-                //throw new UnsupportedOperationException("Not supported yet.");
-            }
-        };
-        
+        recording = true;
         System.out.print("<--Start Recording-->\n");
-        doc.addDocumentListener(documentListener);
-        ax.scriptTextArea.setText("Recording Started");
+        doc.addDocumentListener(this);
+        ax.recordingLabel.setVisible(true);
         
-        //Make sure browser is ready!
+        
+        //Make sure browser is ready! And Refresh.
         
         ax.browser.navigate(ax.addressBar.getText());
         ax.browser.waitReady();
@@ -118,11 +86,17 @@ public class Recorder {
      * from doc.
      */
     int stopRecording(){
-        //Remove Listener
-        System.out.print("<--Removing Listener-->\n");
-        this.doc.removeDocumentListener(documentListener);
-        ax.scriptTextArea.setText("Recording Stopped");
+        //Remove Listener stop recording.
+        System.out.print("\n<--Stop Recording/Removing Listener-->\n");
+        doc.removeDocumentListener(this.documentListener);
+        this.recording = false;
+        ax.recordingLabel.setVisible(false);
+        
+        //Save the script from the script area.
+        MyFile scriptFile = new MyFile(ax);
+        scriptFile.saveas();
         return 0;
+        
     } 
 
     /*
@@ -142,7 +116,7 @@ public class Recorder {
         for (int i=0; i<= parseTokens.length;i++){
             if (parseTokens[i].matches(token[0])){
                 System.out.print("Sending Found Token to Script--->");
-                jRubyScript = generateScriptforToken(parseTokens[i], tpString);
+                jRubyScript = generateScriptforToken(parseTokens[i], token);
                 return jRubyScript;
             }
         
@@ -157,7 +131,7 @@ public class Recorder {
      * the found token, generates a jRuby script for
      * watij to use.
      */
-    private String generateScriptforToken(final String pt, String tk) {
+    private String generateScriptforToken(String pt, String[] token) {
         
         
         
@@ -234,7 +208,10 @@ public class Recorder {
                 return (pt);
             }
             else if (parseTokens[NAVIGATE].matches(pt)){
+                
                 System.out.print("Generating Script for: " + pt);
+                //jRuby watij script
+                pt = ("jrScript.open(\"" + token[1] + "\");");
                 return (pt);
             }
             else if (parseTokens[HOME].matches(pt)){
@@ -251,6 +228,30 @@ public class Recorder {
             }
                
         }
+
+    @Override
+    public void insertUpdate(DocumentEvent de) {
+                if (this.recording == true){
+                    System.out.print("\nInsertUpdate--->");
+                           
+                    String newText = ax.consoleTextArea.getText();
+               
+                    String tpString = tokenParse(newText); 
+                
+                    ax.scriptTextArea.append(tpString + ax.newline);
+                }
+            
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent de) {
+        
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent de) {
+        
+    }
         
     }
     
