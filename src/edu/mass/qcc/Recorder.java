@@ -82,6 +82,8 @@ public class Recorder implements DocumentListener {
         ax.browser.navigate(ax.addressBar.getText());
         ax.browser.waitReady();
         
+        ax.scriptTextArea.append("jrScript = WebSpec.new.ie" + ax.newline);
+        
         return 0;
         
     } 
@@ -179,6 +181,9 @@ public class Recorder implements DocumentListener {
             }    
             else if (parseTokens[BUTTON].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
+                
+                pt = button_handle(token);
+                
                 return (pt);
             }
             else if (parseTokens[DIV].matches(pt)){
@@ -191,7 +196,9 @@ public class Recorder implements DocumentListener {
             }
             else if (parseTokens[INPUT].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
-                pt = ("jrScript.find(\"input\").with(\"id=='"+ token[2] + "'\").set(\"value=='"+ token[5] + "'\").click()");
+                
+                pt = input_handle(token);
+                
                 return (pt);
             }
             else if (parseTokens[OPTION].matches(pt)){
@@ -274,6 +281,75 @@ public class Recorder implements DocumentListener {
     @Override
     public void changedUpdate(DocumentEvent de) {
     }
+    
+    /*
+     * Methods for generating element scripts begin here.
+     */
+    //Julion and John
+    private String input_handle(String[] token){
+    //Get the type of input, text, button, password, hidden, radio, reset, submit, file, etc.
+    if (token[4].equals("text")) {
+        return ("jrScript.input.id('" + token[2] + "').value =\"" + token[5] + "\"");
+    }
+    else if (token[4].equals("button")){
+        return ("jrScript.input.type(\"" + token[4] + "').value =(\"" + token[5] + "\").click()");
+    }
+    
+        return "No Script Generated!";
+    }
+    
+    //Ian H.
+    private String button_handle(String token[]){
+    if (!token[3].equals("<null>")){
+        return ("jrScript.find(\"button\").with(\"name=='"+ token[3] + "'\").click()"); 
+    }
+       
+    return "No Script Generated!";
+    }
+    
+    //Rohit
+    private String anchor_handle(String token[]) {
+        return "";
+    }
+    private String frame_handle(String token[]) {
+        return "";
+    }
+    //na
+    private String image_handle(String token[]) {
+        return "";
+    }
+    //Rohit
+    private String link_handle(String token[]) {
+        return "";
+    }
+    //em
+    private String span_handle(String token[]) {
+        return "";
+    }
+    //em
+    private String div_handle(String token[]) {
+        return "";
+    }
+    //jeremiah 
+    private String form_handle(String token[]) {
+        return "";
+    }
+    //james and khem
+    private String option_handle(String token[]) {
+        return "";
+    }
+    //james and khem
+    private String select_handle(String token[]) {
+        return "";
+    }
+    //Chris
+    private String navigate_handle(String token[]) {
+        return "";
+    }
+    private String textarea_handle(String token[]) {
+        return "";
+    }
+    
         
     }
     
