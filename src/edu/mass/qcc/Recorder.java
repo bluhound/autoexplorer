@@ -173,6 +173,7 @@ public class Recorder implements DocumentListener {
             }
             else if (parseTokens[LINK].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
+                pt = navigate_handle(token);
                 return (pt);
             }    
             else if (parseTokens[SPAN].matches(pt)){
@@ -225,10 +226,12 @@ public class Recorder implements DocumentListener {
             }
             else if (parseTokens[FORWARD].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
+                pt = navigate_handle(token);
                 return (pt);
             }
             else if (parseTokens[BACK].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
+                pt = navigate_handle(token);
                 return (pt);
             }
             else if (parseTokens[SEARCH].matches(pt)){
@@ -238,12 +241,12 @@ public class Recorder implements DocumentListener {
             else if (parseTokens[NAVIGATE].matches(pt)){
                 
                 System.out.print("Generating Script for: " + pt);
-                //jRuby watij script
-                pt = ("jrScript.open(\"" + token[1] + "\")");
+                pt = navigate_handle(token);
                 return (pt);
             }
             else if (parseTokens[HOME].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
+                pt = navigate_handle(token);
                 return (pt);
             }
             else if (parseTokens[TEXTAREA].matches(pt)){
@@ -311,9 +314,11 @@ public class Recorder implements DocumentListener {
     
     //Rohit
     private String anchor_handle(String token[]) {
-        return "";
+        
+        return ("jrScript.open(\"" + token[4] + "\")");
     }
     private String frame_handle(String token[]) {
+        
         return "";
     }
     //na
@@ -322,21 +327,21 @@ public class Recorder implements DocumentListener {
     }
     //Rohit
     private String link_handle(String token[]) {
-        return "";
+        return ("jrScript.open(\"" + token[3] + "\")");
     }
     //em
     private String span_handle(String token[]) {
         if(!token[3].equals("<null>"));
         
        
-        return ("jrScript.find(\"span\").with(\"innerText=='"+token[3]+"'\".click()");
+        return ("jrScript.find(\"span\").with(\"innerText=='"+token[3]+"'\").click()");
     }
     //em
     private String div_handle(String token[]) {
          if(!token[3].equals("<null>"));
         
        
-        return ("jrScript.find(\"div\").with(\"innerText=='"+token[3]+"'\".click()");
+        return ("jrScript.find(\"div\").with(\"innerText=='"+token[3]+"'\").click()");
         
     }
     //jeremiah 
@@ -353,7 +358,7 @@ public class Recorder implements DocumentListener {
     }
     //Chris
     private String navigate_handle(String token[]) {
-        return "";
+        return ("jrScript.open(\"" + token[1] + "\")");
     }
     private String textarea_handle(String token[]) {
         return "";
