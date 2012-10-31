@@ -389,8 +389,9 @@ public class AxBrowser {
                 
                 //Look for child in span
                 else if (("span").equals(tagName)){
-                String sInner = target.getTextContent();
-                tokenString = ("<Click Span>::" + tagName + delim + id + delim + sInner + delim);
+                String sName = target.getTextContent();
+                 //String sInner = DOMElement.getTextContent();
+                tokenString = ("<Click Span>::" + tagName + delim + id + delim + sName + delim);
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {

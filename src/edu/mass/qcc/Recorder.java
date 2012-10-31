@@ -177,6 +177,7 @@ public class Recorder implements DocumentListener {
             }    
             else if (parseTokens[SPAN].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
+                pt = span_handle(token);
                 return (pt);
             }    
             else if (parseTokens[BUTTON].matches(pt)){
@@ -188,6 +189,7 @@ public class Recorder implements DocumentListener {
             }
             else if (parseTokens[DIV].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
+                pt = div_handle(token);
                 return (pt);
             }
             else if (parseTokens[FORM].matches(pt)){
@@ -324,11 +326,18 @@ public class Recorder implements DocumentListener {
     }
     //em
     private String span_handle(String token[]) {
-        return "";
+        if(!token[3].equals("<null>"));
+        
+       
+        return ("jrScript.find(\"span\").with(\"innerText=='"+token[3]+"'\".click()");
     }
     //em
     private String div_handle(String token[]) {
-        return "";
+         if(!token[3].equals("<null>"));
+        
+       
+        return ("jrScript.find(\"div\").with(\"innerText=='"+token[3]+"'\".click()");
+        
     }
     //jeremiah 
     private String form_handle(String token[]) {
