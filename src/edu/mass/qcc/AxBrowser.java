@@ -476,14 +476,38 @@ public class AxBrowser {
                 if ("".equals(iName)){iName = "<null>";}
                 if ("".equals(iId)) {iId = "<null>";}
                 
+                if (iType.equals("text")){
                 tokenString = ("<Click Input>::" + tagName + delim + iId + delim + iName + delim + iType + delim + iValue + delim);
-                
                 //Alert that we will need to capture the text
                 captureInput = true;
-                
                 //Send our split token[]'s
                 tkString = tokenString.split(delim); //For use by navigater listener...
+                }
+                if ((iType).equals("select")){
                 
+                String sForm = target.getAttribute("form");
+                String sLength = target.getAttribute("length");
+                String sMultiple= target.getAttribute("multiple");
+                String sName = target.getAttribute("name");
+                String sSelectIndex = target.getAttribute("selectindex");
+                String sSize = target.getAttribute("size");
+                String sType = target.getAttribute("type");
+                
+                tokenString = ("<Click Select>::" + tagName + "::" + sForm + "::" + sLength + "::" + sMultiple + "::" + sName + "::" + sSelectIndex + "::" + sSize + "::" + sType + "::");
+                ax.consoleTextArea.setText(tokenString);
+                }
+                //Option Element
+                //NHUT TA
+                if (("option").equals(tagName)){
+                
+                String oForm = target.getAttribute("form");
+                String oIndex = target.getAttribute("index");
+                String oText= target.getAttribute("text");
+                String oValue = target.getAttribute("value");
+                
+                tokenString = ("<Click Option>::" + tagName + "::" + oForm + "::" + oIndex + "::" + oText + "::" + oValue + "::");
+                ax.consoleTextArea.setText(tokenString);
+                }
                 }
                 
                 
