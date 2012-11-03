@@ -38,7 +38,7 @@ public class autoexplorer extends javax.swing.JFrame {
    Browser browser;
  AxBrowser axBrowser;
   Recorder recorder;
-    MyFile myFile;
+    SHFile myFile;
     
     /**
      * Starts the GUI 
@@ -129,7 +129,7 @@ public class autoexplorer extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Autoexplorer Alpha Version 0.60");
+        setTitle("Autoexplorer Alpha Version 0.75");
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1200, 700));
         setName("Main"); // NOI18N
@@ -393,7 +393,7 @@ public class autoexplorer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void openFileMenuOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileMenuOptionActionPerformed
-        myFile = new MyFile(this);
+        myFile = new SHFile(this);
         myFile.open();
          
 
@@ -401,7 +401,7 @@ public class autoexplorer extends javax.swing.JFrame {
     }//GEN-LAST:event_openFileMenuOptionActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        myFile = new MyFile(this);
+        myFile = new SHFile(this);
         myFile.saveas();
     
         

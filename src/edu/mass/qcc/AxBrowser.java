@@ -275,7 +275,7 @@ public class AxBrowser {
                 org.w3c.dom.events.MouseEvent event = (org.w3c.dom.events.MouseEvent) evt;
                 HTMLElement target = (HTMLElement) event.getTarget();
                 //Send target to HTMLEvent for processing
-                htmlEvent.processThis(ax, target);
+                htmlEvent.processThis(ax, target, documentElement);
                 
             }
         
@@ -287,7 +287,7 @@ public class AxBrowser {
                 
                 org.w3c.dom.events.MouseEvent event = (org.w3c.dom.events.MouseEvent) evt;
                 HTMLElement target = (HTMLElement) event.getTarget();
-                htmlEvent.processThis(ax, target);
+                htmlEvent.processThis(ax, target, documentElement);
 
                 
             }

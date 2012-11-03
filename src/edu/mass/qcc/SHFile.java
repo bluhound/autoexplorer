@@ -18,11 +18,11 @@ import javax.swing.JFileChooser;
  *
  * @author Ian
  */
-public class MyFile {
+public class SHFile {
     
     autoexplorer ax;
     
-    MyFile(autoexplorer Ax){
+    SHFile(autoexplorer Ax){
         
         ax = Ax;
         
@@ -53,25 +53,17 @@ public class MyFile {
                     //FileReader opens a way to read the file that we
                     //created above.
                     FileReader mFile = new FileReader(selectedFile.getPath());
-                    
-                    //BufferedReader lets you read something line by line
-                    //rather than all at once.
-                    BufferedReader bufferedReader = new BufferedReader(mFile);
-                    
-                    //This is where we add our text into the text area
-                    //that we added in design mode.
-                    String line = null;
+                try (BufferedReader bufferedReader = new BufferedReader(mFile)) {
+                    String line;
                     //This just says, keep getting a new line of text
                     //until we reach the end of the file: null
                     while ((line = bufferedReader.readLine()) != null){
                         //This is how we add the text to the text area
                         //append means to add it at the end.
-                    ax.scriptTextArea.append(line + "\n");
+                    ax.scriptTextArea.append(line + ax.newline);
                         
                     }
-                    //Close the reader.
-                    bufferedReader.close();
-                  //This is just the way we catch an error.  
+                }
                 } catch (IOException ioex) {
                     System.err.println(ioex);
                     return(-1);
@@ -91,6 +83,7 @@ public class MyFile {
     //This time, open the fileChooser using the showSaveDialog
     //instead of showOpendialog
     JFileChooser fileChooser = new JFileChooser();
+   
     //Again check for errors
         int returnValue = fileChooser.showSaveDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -102,15 +95,12 @@ public class MyFile {
         //Try to print to the file using PrintWriter     
     
         try {
-            PrintWriter printWriter = new PrintWriter(selectedFile);
-            //See above, outTextToSave we grabbed from the jTextArea1
-            //by useing the .getText() method
-            printWriter.println(outTextToSave);
-            //Close the print writer
-            printWriter.close();
+                try (PrintWriter printWriter = new PrintWriter(selectedFile)) {
+                     printWriter.println(outTextToSave);
+                }
             
-            //Print to the console that it was saved.
-            System.out.printf("\nFile was Saved\n");
+            //Show file was saved in scriptArea
+                ax.scriptTextArea.setText("File was saved.");
             
             //Catch all errors and log them.
         } catch (FileNotFoundException ex) {

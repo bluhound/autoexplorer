@@ -4,6 +4,7 @@
  */
 package edu.mass.qcc;
 
+import com.teamdev.jxbrowser.dom.DOMElement;
 import javax.swing.SwingUtilities;
 import org.w3c.dom.html.HTMLElement;
 
@@ -13,39 +14,35 @@ import org.w3c.dom.html.HTMLElement;
  */
 public class HTMLEvents {
     String tokenString = "";
-    String delim = "::";
+    String oldText;
     autoexplorer ax;
-    public String  newline = "\n";
-    public String  home = "http://www.google.com";
-    public String[] tkString;
-    public String eValue;
-    int TAGNAME = 1;
-    int ID = 2;
-    int VALUE = 5;
-    Boolean captureInput = false;
-    
     
     HTMLEvents(){
     
     }
-    int processThis(autoexplorer AX, HTMLElement target){
+    /*
+     * processThis(autoexplorer AX, HTMLElement target)
+     * Checks that an element exists and turns the element atrributes into
+     * a token string by calling the tokenize method from the TokenParse class
+     * 
+     */
+    int processThis(autoexplorer AX, HTMLElement target, DOMElement domElement){
         ax = AX;
-        
-        
+        TokenParse tp = new TokenParse();
+        oldText = tokenString;
         String tagName = target.getNodeName().toLowerCase();
                 String id = target.getId();
-                if (id == null){id = "<null>";
+                if (id == null){id = tp.parseToken[tp.NULL];
                 
                 }
                 //If element is a link, get href
                 if (("a").equals(tagName)){
                 
-                String aname = target.getAttribute("name");
-                String ahref = target.getAttribute("href");
+                String aName = target.getAttribute("name");
+                String aHref = target.getAttribute("href");
+                String[] elements = {tp.parseToken[tp.ANCHOR], tagName, id, aName, aHref};
+                tokenString = tp.tokenize(elements);
                 
-                
-                tokenString = ("<Click Anchor>::" + tagName + delim + id + delim + aname + delim
-                                + ahref + delim );
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -56,10 +53,11 @@ public class HTMLEvents {
                 }
                 //Get the name of the frame
                 else if (("frame").equals(tagName)){
-  
+                String fInner = domElement.innerHTML();
                 String frameTitle = target.getAttribute("title");
+                String[] elements = {tp.parseToken[tp.FRAME], tagName, id, frameTitle, fInner};
+                tokenString = tp.tokenize(elements);
                 
-                tokenString = ("<Click Frame>::" + tagName + delim + id + delim + frameTitle + delim);
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -72,7 +70,9 @@ public class HTMLEvents {
                
                 String imgAlt = target.getAttribute("alt");
                 String imgSrc = target.getAttribute("src");
-                tokenString = ("<Click Image>::" + tagName + delim + id + delim + imgAlt + delim + imgSrc + delim);
+                String[] elements = {tp.parseToken[tp.IMAGE], tagName, id, imgAlt, imgSrc};
+                tokenString = tp.tokenize(elements);
+                
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -84,8 +84,9 @@ public class HTMLEvents {
                 else if (("link").equals(tagName)){
                
                 String link = target.getAttribute("href");
+                String[] elements = {tp.parseToken[tp.LINK], tagName, id, link};
+                tokenString = tp.tokenize(elements);
                 
-                tokenString = ("<Click Link>::" + tagName + delim + id + delim + link + delim);
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -97,8 +98,9 @@ public class HTMLEvents {
                 //Look for child in span
                 else if (("span").equals(tagName)){
                 String sName = target.getTextContent();
-                 //String sInner = DOMElement.getTextContent();
-                tokenString = ("<Click Span>::" + tagName + delim + id + delim + sName + delim);
+                String[] elements = {tp.parseToken[tp.SPAN], tagName, id, sName};
+                tokenString = tp.tokenize(elements);
+                
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -111,8 +113,9 @@ public class HTMLEvents {
                 String bName = target.getAttribute("name");
                 String bType = target.getAttribute("type");
                 String bValue = target.getAttribute("value");
+                String[] elements = {tp.parseToken[tp.BUTTON], tagName, id, bName, bType, bValue};
+                tokenString = tp.tokenize(elements);
                 
-                tokenString = ("<Click Button>::" + tagName + delim + id + delim + bName + delim + bType + delim + bValue + delim);
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -125,11 +128,9 @@ public class HTMLEvents {
                
                 String dClass = target.getClassName();
                 String dId = target.getId();
+                String[] elements = {tp.parseToken[tp.DIV], tagName, dId, dClass};
+                tokenString = tp.tokenize(elements);
                 
-                if ("".equals(dId)) {dId = "<null>";}
-                if (dClass.isEmpty()) {dClass = "<null>";}
-                
-                tokenString = ("<Click Div>::" + tagName + delim + dId + delim + dClass + delim);
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -143,11 +144,9 @@ public class HTMLEvents {
                 String fName = target.getAttribute("name");
                 String fTarget = target.getAttribute("target");
                 String fId = target.getId();
-                if ("".equals(fName)){fName = "<null>";}
-                if ("".equals(fTarget)){fName = "<null>";}
-                if ("".equals(fId)){fName = "<null>";}
+                String[] elements = {tp.parseToken[tp.FRAME], tagName, fId, fName, fTarget};
+                tokenString = tp.tokenize(elements);
                 
-                tokenString = ("<Click Form>::" + tagName + delim + fId + delim + fName + delim + fTarget + delim);
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -161,8 +160,9 @@ public class HTMLEvents {
                 String tName = target.getAttribute("name");
                 String tType = target.getAttribute("type");
                 String tValue = target.getAttribute("value");
+                String[] elements = {tp.parseToken[tp.TEXTAREA], tagName, id, tName, tType, tValue};
+                tokenString = tp.tokenize(elements);
                 
-                tokenString = ("<Click TextArea>::" + tagName + delim + id + delim + tName + delim + tType + delim + tValue + delim);
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -178,12 +178,9 @@ public class HTMLEvents {
                 String iType = target.getAttribute("type");
                 String iValue = target.getAttribute("value");
                 String iId = target.getId();
-                if ("".equals(iValue)){iValue = "<null>";}
-                if ("".equals(iType)){iType = "<null>";}
-                if ("".equals(iName)){iName = "<null>";}
-                if ("".equals(iId)) {iId = "<null>";}
+                String[] elements = {tp.parseToken[tp.INPUT], tagName, iId, iName, iType, iValue};
+                tokenString = tp.tokenize(elements);
                 
-                tokenString = ("<Click Input>::" + tagName + delim + iId + delim + iName + delim + iType + delim + iValue + delim);
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -200,8 +197,9 @@ public class HTMLEvents {
                 String sSelectIndex = target.getAttribute("selectindex");
                 String sSize = target.getAttribute("size");
                 String sType = target.getAttribute("type");
+                String[] elements = {tp.parseToken[tp.SELECT], tagName, id, sName, sForm, sLength, sMultiple, sSelectIndex, sSize, sType};
+                tokenString = tp.tokenize(elements);
                 
-                tokenString = ("<Click Select>::" + tagName + "::" + sForm + "::" + sLength + "::" + sMultiple + "::" + sName + "::" + sSelectIndex + "::" + sSize + "::" + sType + "::");
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -217,8 +215,9 @@ public class HTMLEvents {
                 String oIndex = target.getAttribute("index");
                 String oText= target.getAttribute("text");
                 String oValue = target.getAttribute("value");
+                String[] elements = {tp.parseToken[tp.OPTION], tagName, id, oForm, oIndex, oText, oValue};
+                tokenString = tp.tokenize(elements);
                 
-                tokenString = ("<Click Option>::" + tagName + "::" + oForm + "::" + oIndex + "::" + oText + "::" + oValue + "::");
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -233,12 +232,9 @@ public class HTMLEvents {
                 String oName = target.getAttribute("name");
                 String oValue = target.getAttribute("value");
                 String oId = target.getId();
-                if ("".equals(oValue)){oValue = "<null>";}
-                if ("".equals(oType)){oType = "<null>";}
-                if ("".equals(oName)){oName = "<null>";}
-                if ("".equals(oId)){oId = "<null>";}
+                String[] elements = {tp.parseToken[tp.OTHER], tagName, oId, oName, oType, oValue};
+                tokenString = tp.tokenize(elements);
                 
-                tokenString = ("<Click Other>::" + tagName + delim + oId + delim + oName + delim + oType + delim + oValue + delim);    
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -253,4 +249,4 @@ public class HTMLEvents {
     return 0;
     }
 
-    }
+}
