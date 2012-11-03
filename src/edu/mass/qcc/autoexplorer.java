@@ -48,7 +48,6 @@ public class autoexplorer extends javax.swing.JFrame {
         initComponents();
         System.setProperty("teamdev.license.info", "true");
         
-        
         //Get a new browser. The browser that is returned will depend
         //on which OS is installed on the users computer.
         
@@ -90,8 +89,6 @@ public class autoexplorer extends javax.swing.JFrame {
     private void initComponents() {
 
         browserPane = new javax.swing.JTabbedPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        HTMLTextArea1 = new javax.swing.JTextArea();
         jToolBar1 = new javax.swing.JToolBar();
         homeButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
@@ -132,7 +129,7 @@ public class autoexplorer extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Autoexplorer Alpha-Version 0.47");
+        setTitle("Autoexplorer Alpha Version 0.60");
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1200, 700));
         setName("Main"); // NOI18N
@@ -143,19 +140,6 @@ public class autoexplorer extends javax.swing.JFrame {
         browserPane.setMinimumSize(new java.awt.Dimension(40, 400));
         browserPane.setOpaque(true);
         browserPane.setPreferredSize(new java.awt.Dimension(190, 450));
-
-        jScrollPane2.setBackground(java.awt.Color.white);
-
-        HTMLTextArea1.setColumns(20);
-        HTMLTextArea1.setLineWrap(true);
-        HTMLTextArea1.setRows(5);
-        HTMLTextArea1.setWrapStyleWord(true);
-        HTMLTextArea1.setMinimumSize(new java.awt.Dimension(104, 400));
-        HTMLTextArea1.setPreferredSize(new java.awt.Dimension(1150, 400));
-        jScrollPane2.setViewportView(HTMLTextArea1);
-
-        browserPane.addTab("tab1", jScrollPane2);
-
         getContentPane().add(browserPane, java.awt.BorderLayout.CENTER);
 
         jToolBar1.setBorder(null);
@@ -163,19 +147,19 @@ public class autoexplorer extends javax.swing.JFrame {
         jToolBar1.setOpaque(false);
         jToolBar1.setRequestFocusEnabled(false);
 
-        homeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/home.png"))); // NOI18N
+        homeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/home.png"))); // NOI18N
         homeButton.setFocusable(false);
         homeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         homeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(homeButton);
 
-        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/back_24.png"))); // NOI18N
+        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/back_24.png"))); // NOI18N
         backButton.setFocusable(false);
         backButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         backButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(backButton);
 
-        forwardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/forward_24.png"))); // NOI18N
+        forwardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/forward_24.png"))); // NOI18N
         forwardButton.setFocusable(false);
         forwardButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         forwardButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -192,13 +176,13 @@ public class autoexplorer extends javax.swing.JFrame {
         });
         jToolBar1.add(addressBar);
 
-        goButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/forward.png"))); // NOI18N
+        goButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/forward.png"))); // NOI18N
         goButton.setFocusable(false);
         goButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         goButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(goButton);
 
-        refreshButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/refresh.png"))); // NOI18N
+        refreshButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/refresh.png"))); // NOI18N
         refreshButton.setToolTipText("");
         refreshButton.setFocusable(false);
         refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -212,7 +196,7 @@ public class autoexplorer extends javax.swing.JFrame {
         });
         jToolBar1.add(refreshButton);
 
-        stopBrowserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/stop_2.png"))); // NOI18N
+        stopBrowserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/stop_2.png"))); // NOI18N
         stopBrowserButton.setFocusable(false);
         stopBrowserButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         stopBrowserButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -227,7 +211,7 @@ public class autoexplorer extends javax.swing.JFrame {
         });
         jToolBar1.add(searchField);
 
-        recordButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/record.png"))); // NOI18N
+        recordButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/record.png"))); // NOI18N
         recordButton.setFocusable(false);
         recordButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         recordButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -238,7 +222,7 @@ public class autoexplorer extends javax.swing.JFrame {
         });
         jToolBar1.add(recordButton);
 
-        stopRecordButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/stop.png"))); // NOI18N
+        stopRecordButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/stop.png"))); // NOI18N
         stopRecordButton.setFocusable(false);
         stopRecordButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         stopRecordButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -249,13 +233,13 @@ public class autoexplorer extends javax.swing.JFrame {
         });
         jToolBar1.add(stopRecordButton);
 
-        playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/play.png"))); // NOI18N
+        playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/play.png"))); // NOI18N
         playButton.setFocusable(false);
         playButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         playButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(playButton);
 
-        pauseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/pause.png"))); // NOI18N
+        pauseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/pause.png"))); // NOI18N
         pauseButton.setFocusable(false);
         pauseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         pauseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -263,7 +247,7 @@ public class autoexplorer extends javax.swing.JFrame {
 
         recordingLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         recordingLabel.setForeground(new java.awt.Color(255, 0, 51));
-        recordingLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/Record.gif"))); // NOI18N
+        recordingLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/Record.gif"))); // NOI18N
         recordingLabel.setText("Recording");
         jToolBar1.add(recordingLabel);
 
@@ -286,6 +270,8 @@ public class autoexplorer extends javax.swing.JFrame {
         statusLabel.setName(""); // NOI18N
         statusLabel.setPreferredSize(new java.awt.Dimension(248, 31));
         jToolBar2.add(statusLabel);
+
+        jSplitPane1.setResizeWeight(0.5);
 
         scriptTextArea.setColumns(20);
         scriptTextArea.setLineWrap(true);
@@ -509,7 +495,6 @@ OptionPane op = new OptionPane();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JCheckBoxMenuItem CheckBoxShowConsole;
-    public javax.swing.JTextArea HTMLTextArea1;
     public java.awt.TextField addressBar;
     public javax.swing.JButton backButton;
     public javax.swing.JTabbedPane browserPane;
@@ -533,7 +518,6 @@ OptionPane op = new OptionPane();
     public javax.swing.JMenuItem jMenuItem9;
     public javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     public javax.swing.JSplitPane jSplitPane1;
     public javax.swing.JToolBar jToolBar1;

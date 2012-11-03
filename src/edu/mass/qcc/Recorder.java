@@ -51,6 +51,7 @@ public class Recorder implements DocumentListener {
     int NAVIGATE = 17;
     int HOME = 18;
     int TEXTAREA = 19;
+    char comment = '#';
     
     Boolean recording = false;
     autoexplorer ax;
@@ -83,6 +84,8 @@ public class Recorder implements DocumentListener {
         ax.browser.waitReady();
         
         ax.scriptTextArea.append("jrScript = WebSpec.new.ie" + ax.newline);
+        ax.scriptTextArea.append("jrScript.open(\"" + ax.addressBar.getText() + "\") " + ax.newline);
+        
         
         return 0;
         
@@ -160,6 +163,7 @@ public class Recorder implements DocumentListener {
         
             if (parseTokens[ANCHOR].matches(pt)){
                 System.out.print("Generating Script for--->" + pt);
+                pt = anchor_handle(token);
                 return (pt);
                
             }
@@ -214,15 +218,7 @@ public class Recorder implements DocumentListener {
             }
             else if (parseTokens[OTHER].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
-                return (pt);
-            }
-            else if (parseTokens[TEXT].matches(pt)){
-                System.out.print("Generating Script for: " + pt);
-                return (pt);
-            }
-            else if (parseTokens[ENTER].matches(pt)){
-                System.out.print("Generating Script for: " + pt);
-                return (pt);
+                return (comment + pt);
             }
             else if (parseTokens[FORWARD].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
@@ -251,6 +247,7 @@ public class Recorder implements DocumentListener {
             }
             else if (parseTokens[TEXTAREA].matches(pt)){
                 System.out.print("Generating Script for: " + pt);
+                pt = textarea_handle(token);
                 return (pt);
             }
             else {
@@ -292,15 +289,24 @@ public class Recorder implements DocumentListener {
      */
     //Julion and John
     private String input_handle(String[] token){
-    //Get the type of input, text, button, password, hidden, radio, reset, submit, file, etc.
-    if (token[4].equals("text")) {
-        return ("jrScript.input.id('" + token[2] + "').value =\"" + token[5] + "\"");
-    }
-    else if (token[4].equals("button")){
-        return ("jrScript.input.type(\"" + token[4] + "').value =(\"" + token[5] + "\").click()");
-    }
-    
-        return "No Script Generated!";
+        //Get the type of input, text, button, password, hidden, radio, reset, submit, file, etc.
+        switch (token[4]) {
+            case "text":
+                return ("jrScript.input.id('" + token[2] + "').value ='" + token[5] + "'");
+            case "button":
+                return ("jrScript.input.id(\"" + token[2] + "').click()");
+            case "password":
+                return ("jrScript.input.id(\"" + token[2] + "').value ='" + token[5] + "'");
+            case "hidden":
+                return ("jrScript.input.type(\"" + token[4] + "').value =(\"" + token[5] + "\").click()");
+            case "submit":
+                return ("jrScript.input.id(\"" + token[2] + "').click()");
+            case "checkbox":
+                return ("jrScript.input.type(\"" + token[4] + "').click()");
+            case "file":
+                return ("jrScript.input.type(\"" + token[4] + "').click()");
+        }
+        return "Input type not yet implemented.";
     }
     
     //Ian H.
@@ -361,7 +367,9 @@ public class Recorder implements DocumentListener {
         return ("jrScript.open(\"" + token[1] + "\")");
     }
     private String textarea_handle(String token[]) {
-        return "";
+        
+        return ("jrScript.find(\"textarea\").with(\"name=='" + token[3] + "'\").value='" + token[5] + "'");
+    
     }
     
         
