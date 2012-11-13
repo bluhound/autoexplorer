@@ -217,11 +217,13 @@ public class Script {
     }
     //james and khem
     private String option_handle(String token[]) {
-        return "";
+       if(!token[3].equals("<null>"));  
+        return ("jrScript.find(\"option\").with(\"innerText=='"+token[3]+"'\").click()");
     }
     //james and khem
     private String select_handle(String token[]) {
-        return "";
+       if(!token[3].equals("<null>")); 
+        return ("jrScript.find(\"select\").with(\"innerText=='"+token[3]+"'\").click()");
     }
     //Chris
     private String navigate_handle(String token[]) {
