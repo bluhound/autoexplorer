@@ -6,6 +6,9 @@ import com.teamdev.jxbrowser.BrowserType;
 import com.teamdev.jxbrowser.prompt.CloseStatus;
 import com.teamdev.jxbrowser.prompt.DefaultPromptService;
 import com.teamdev.jxbrowser.prompt.ScriptErrorParams;
+import java.awt.AWTException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -77,6 +80,7 @@ public class autoexplorer extends javax.swing.JFrame {
         jSplitPane1.setResizeWeight(.5); 
         recordingLabel.setVisible(false);
         
+                
     }
     
     /**
@@ -90,10 +94,12 @@ public class autoexplorer extends javax.swing.JFrame {
 
         browserPane = new javax.swing.JTabbedPane();
         jToolBar1 = new javax.swing.JToolBar();
+        addTabButton = new javax.swing.JButton();
         homeButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         forwardButton = new javax.swing.JButton();
         addressBar = new java.awt.TextField();
+        cbHistory = new javax.swing.JComboBox();
         goButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
         stopBrowserButton = new javax.swing.JButton();
@@ -129,7 +135,7 @@ public class autoexplorer extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Autoexplorer Alpha Version 0.75");
+        setTitle("Autoexplorer Alpha Version 0.94");
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1200, 700));
         setName("Main"); // NOI18N
@@ -146,6 +152,17 @@ public class autoexplorer extends javax.swing.JFrame {
         jToolBar1.setRollover(true);
         jToolBar1.setOpaque(false);
         jToolBar1.setRequestFocusEnabled(false);
+
+        addTabButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/plus.png"))); // NOI18N
+        addTabButton.setFocusable(false);
+        addTabButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        addTabButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        addTabButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTabButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(addTabButton);
 
         homeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/home.png"))); // NOI18N
         homeButton.setFocusable(false);
@@ -175,6 +192,7 @@ public class autoexplorer extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(addressBar);
+        jToolBar1.add(cbHistory);
 
         goButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/forward.png"))); // NOI18N
         goButton.setFocusable(false);
@@ -458,6 +476,23 @@ OptionPane op = new OptionPane();
         searchField.selectAll();
     }//GEN-LAST:event_searchFieldMouseClicked
 
+    private void addTabButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTabButtonActionPerformed
+        SwingUtilities.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                        SendK sk = new SendK();
+                try {
+                    sk.type("Enter");
+                    sk.type("Tab");
+                } catch (AWTException ex) {
+                    Logger.getLogger(autoexplorer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                        
+                           }
+                });
+    }//GEN-LAST:event_addTabButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -495,9 +530,11 @@ OptionPane op = new OptionPane();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JCheckBoxMenuItem CheckBoxShowConsole;
+    private javax.swing.JButton addTabButton;
     public java.awt.TextField addressBar;
     public javax.swing.JButton backButton;
     public javax.swing.JTabbedPane browserPane;
+    public javax.swing.JComboBox cbHistory;
     public javax.swing.JMenuItem closeFileMenuOption;
     public javax.swing.JTextArea consoleTextArea;
     public javax.swing.JButton forwardButton;

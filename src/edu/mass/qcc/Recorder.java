@@ -81,7 +81,7 @@ public class Recorder implements DocumentListener {
     int stopRecording(){
         //Remove Listener stop recording.
         System.out.print(ax.newline + "<--Stop Recording/Removing Listener-->" + ax.newline);
-        doc.removeDocumentListener(this.documentListener);
+        doc.removeDocumentListener(documentListener);
         this.recording = false;
         ax.recordingLabel.setVisible(false);
         
@@ -100,19 +100,11 @@ public class Recorder implements DocumentListener {
     @Override
     public void insertUpdate(DocumentEvent de) {
         if (this.recording == true){
-                    System.out.print(ax.newline + "InsertUpdate--->");
-                           
+                    System.out.print(ax.newline + "InsertUpdate--->");       
                     String newText = ax.consoleTextArea.getText();
-                    
-                    if (newText.equals(he.oldText)){
-                        //do nothing
-                        //this eliminates the doubling of script generation
-                        //caused by the multithread.
-                    }
-                    else {
                     String tpString = tp.TokenParse(newText); 
                     ax.scriptTextArea.append(tpString + ax.newline);
-                    }
+                    
                 }
                 
             

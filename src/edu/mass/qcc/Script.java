@@ -6,7 +6,7 @@ package edu.mass.qcc;
 
 /**
  *
- * @author Ian
+ * @author Csc 207
  */
 public class Script {
     TokenParse tp = new TokenParse();
@@ -35,11 +35,12 @@ public class Script {
                 return (pt);
                
             }
-            else if (tp.parseToken[tp.FRAME].matches(pt)){
+            else if (tp.parseToken[tp.KEY].matches(pt)){
                 System.out.print(GS + pt);
-                pt = frame_handle(token);
+                pt = key_handle(token);
                 return (pt);
             }
+            
             else if (tp.parseToken[tp.IMAGE].matches(pt)){
                 System.out.print(GS + pt);
                 pt = image_handle(token);
@@ -65,11 +66,7 @@ public class Script {
                 pt = div_handle(token);
                 return (pt);
             }
-            else if (tp.parseToken[tp.FORM].matches(pt)){
-                System.out.print(GS + pt);
-                pt = form_handle(token);
-                return (pt);
-            }
+            
             else if (tp.parseToken[tp.INPUT].matches(pt)){
                 System.out.print(GS + pt);
                 pt = input_handle(token);
@@ -184,16 +181,11 @@ public class Script {
     int HREF = 4;    
         return ("jrScript.open(\"" + token[HREF] + "\")");
     }
-    private String frame_handle(String token[]) {
-        return "";
-    }
     //na
     private String image_handle(String token[]) {
-        if (tp.hasId(token)){
-        return ("jrScript.find(\"image\").with(\"id=='"+token[tp.ID]+"'\").click()");
-        }else{
-        return (COMMENT + "Couldn't find image ID - Need to implement lookup by Source.");
-        }
+        
+        return ("jrScript.find(\"image\").with(\"src=='"+token[tp.ID]+"'\").click()");
+        
     }
     //Rohit
     private String link_handle(String token[]) {
@@ -211,10 +203,7 @@ public class Script {
          return ("jrScript.find(\"div\").with(\"innerText=='"+token[3]+"'\").click()");
         
     }
-    //jeremiah 
-    private String form_handle(String token[]) {
-        return "";
-    }
+    
     //james and khem
     private String option_handle(String token[]) {
        if(!token[3].equals("<null>"));  
@@ -240,5 +229,12 @@ public class Script {
         return ("jrScript.open(\"" + token[ADDRESS] + "\")");
     
     }
-    
+    private String key_handle(String token[]) {
+        if (token[1].equals("Enter")){
+        return ("wsh.sendkey('{ENTER}')");    
+        }
+        else{
+        return ("wsh.sendkey('{TAB}')");
+        }
+    }
 }

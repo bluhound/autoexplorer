@@ -8,13 +8,15 @@ import com.teamdev.jxbrowser.events.StatusChangedEvent;
 import com.teamdev.jxbrowser.events.StatusListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JTextArea;
-import javax.swing.JTree;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.SwingUtilities;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
 import org.w3c.dom.html.HTMLElement;
+
 
 /**
  *
@@ -22,21 +24,26 @@ import org.w3c.dom.html.HTMLElement;
  */
 public class AxBrowser {
     //Common Variables
-    
-    public String  tokenString = "";
-    public String  newline = "\n";
-    public String  home = "http://www.google.com";
-    public String  delim = "::";
+    //import org.watij.webspec.dsl.WebSpec;
+     public String  tokenString = "";
+     public String  newline = "\n";
+     public String  home = "http://www.google.com";
+     public String  delim = "::";
     public String[] tkString;
-    public String eValue;
-    int TAGNAME = 1;
-    int ID = 2;
-    int VALUE = 5;
-    Boolean captureInput = false;
-    autoexplorer ax;
-    Document document;
-    HTMLEvents htmlEvent = new HTMLEvents();
-    
+      public String eValue;
+                int TAGNAME = 1;
+                int ID = 2;
+                int VALUE = 5;
+            Boolean captureInput = false;
+       autoexplorer ax;
+           Document document;
+         HTMLEvents htmlEvent = new HTMLEvents();
+         DOMElement documentElement;
+         EventListener clickEventListener;
+         EventListener changeEventListener;
+         EventListener inEventListener;
+         EventListener outEventListener;
+         
     AxBrowser(autoexplorer Ax){
     
         ax = Ax;
@@ -51,7 +58,9 @@ public class AxBrowser {
                         @Override
                         public void run() {
        
-                        ax.browserPane.add(ax.browser.getComponent());
+                        ax.browserPane.add("Browser", ax.browser.getComponent());
+                        
+                        
                            }
                 }); 
     
@@ -118,7 +127,46 @@ public class AxBrowser {
 
             
         
+        //Browser tab and enter listener
         
+        ax.browser.getComponent().addKeyListener(new KeyListener() {
+            
+            @Override
+            public void keyTyped(KeyEvent ke) {
+                
+            }
+            @Override
+            public void keyPressed(KeyEvent ke) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent ke) {{
+                if(ke.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){ 
+                 
+                    tokenString = ("<Action Key>::" + "Enter" + delim);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                         public void run() {
+                         ax.consoleTextArea.setText(tokenString);
+            }
+        });
+            }  {
+                if(ke.getKeyCode() == java.awt.event.KeyEvent.VK_TAB){ 
+                 
+                    tokenString = ("<Action Key>::" + "Tab" + delim);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                         public void run() {
+                         ax.consoleTextArea.setText(tokenString);
+            }
+        });
+            }
+            }
+                
+            }}
+        });
+
+      
         //Address Bar Enter Key listener, same as above but with Enter Key
          ax.addressBar.addKeyListener(new java.awt.event.KeyAdapter() {
             
@@ -210,34 +258,12 @@ public class AxBrowser {
        ax.browser.addNavigationListener(new NavigationListener() {
             @Override
         public void navigationStarted(final NavigationEvent event) {
-        //Check if any data needs to be captured before leaving...
-                if (captureInput) {
-                    
-                    document = ax.browser.getDocument();
-                    
-                    //tkString[ID] is the id of the element
-                    if (!("<null>".matches(tkString[ID]))){
-                        System.out.print("\n<---Found element id - trying to capture--->"+tkString[2]+"\n");
-                        DOMElement documentElement = (DOMElement) document.getElementById(tkString[ID]);
-                        eValue = documentElement.getAttribute("value");
-                        System.out.print("Captured Value for Element: " + eValue);
-                        
-                        //Turn off capturing.
-                        captureInput = false;
-                    }
-                    
-                
-                SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                ax.consoleTextArea.setText(tkString[0] + delim + tkString[1] + delim + tkString[2] + delim + tkString[3] + delim + tkString[4] + delim + eValue + delim);
-            
-                }
-                
-              });
-                }
-              
-        }
+        documentElement.removeEventListener("click", clickEventListener, false);        
+        documentElement.removeEventListener("change", changeEventListener, false);      
+        documentElement.removeEventListener("focusin", inEventListener, false);        
+        documentElement.removeEventListener("focusout", outEventListener, false);      
+        
+            }
 
             @Override
         public void navigationFinished(NavigationFinishedEvent event) {
@@ -264,57 +290,105 @@ public class AxBrowser {
         
         
         
-        Document document = ax.browser.getDocument();
-        final DOMElement documentElement = (DOMElement) document.getDocumentElement();
+        document = ax.browser.getDocument();
+        documentElement = (DOMElement) document.getDocumentElement();
+        
         
         //Listener for element clicks
-        documentElement.addEventListener("click", new EventListener() {
+        
+        
+        clickEventListener = new EventListener() {
+
+         @Override
+     public void handleEvent(Event evt) {
+         
+         org.w3c.dom.events.MouseEvent event = (org.w3c.dom.events.MouseEvent) evt;
+         HTMLElement target = (HTMLElement) event.getTarget();
+         //Send target to HTMLEvent for processing
+         String tagName = target.getNodeName().toLowerCase();
+         if (tagName.equals("input") || tagName.equals("textarea")){
+             documentElement.addEventListener("change", changeEventListener, false);
+                       
+         }
+         else {
+         htmlEvent.processThis(ax, target, documentElement);
+         }
+         
+     }
+ };
+                
+   
+                //Looks for changes in text.             
+                changeEventListener = new EventListener() {
+
                 @Override
-            public void handleEvent(Event evt) {
+                public void handleEvent(Event evt) {
                 
                 org.w3c.dom.events.MouseEvent event = (org.w3c.dom.events.MouseEvent) evt;
                 HTMLElement target = (HTMLElement) event.getTarget();
                 //Send target to HTMLEvent for processing
+                
                 htmlEvent.processThis(ax, target, documentElement);
+                
                 
             }
-        
-        }, false);
-        
-        documentElement.addEventListener("focusout", new EventListener() {
-                @Override
-            public void handleEvent(Event evt) {
-                
-                org.w3c.dom.events.MouseEvent event = (org.w3c.dom.events.MouseEvent) evt;
-                HTMLElement target = (HTMLElement) event.getTarget();
-                htmlEvent.processThis(ax, target, documentElement);
+            };
 
+        
+                inEventListener = new EventListener() {
+
+                @Override
+                public void handleEvent(Event evt) {
                 
+                 System.out.println("Focused in, add click and text change listener");
+                 documentElement.addEventListener("change", changeEventListener, false);
+                 documentElement.addEventListener("click", clickEventListener, false);
+ 
             }
-        
-        }, false);
-        
-        
-        }
+            };
+
+                documentElement.addEventListener("focusin", inEventListener, false);
+
+                outEventListener = new EventListener() {
+
+                @Override
+                public void handleEvent(Event evt) {
+                
+                //Remove Listeners on focus out.
+                System.out.println("Focused out, removing click and change listeners");
+                 documentElement.removeEventListener("change", changeEventListener, false);
+                 documentElement.removeEventListener("click", clickEventListener, false);
+ 
+                }
+                };
+
+                documentElement.addEventListener("focusout", outEventListener, false);
+
+
+            
+            
+            }
         });
         
        //Navigate to our home screen and wait for it to be ready.
        ax.browser.navigate(home);
        ax.browser.waitReady();
-        
-        //Change the tab text to current page
+       ax.browser.refresh();
+       
+       //Change the tab text to current page
         SwingUtilities.invokeLater(new Runnable() {
-
+       
         @Override
         public void run() {
         
-        //Setup theax.browser tab, html tab and addressbar
+        //Setup the ax.browser tab, html tab and addressbar
         ax.browserPane.setTitleAt(0,ax.browser.getTitle());
         String stringToken1 = ("<Navigate Home>::" + home); 
         ax.consoleTextArea.setText(stringToken1);
         //Put the current html address in the addressbar
         ax.addressBar.setText(ax.browser.getCurrentLocation());
-                            }
+        
+                           }
                 });
         
         }

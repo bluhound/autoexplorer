@@ -15,7 +15,7 @@ public class TokenParse {
     {"<Click Anchor>", "<Click Frame>", "<Click Image>", "<Click Link>",
      "<Click Span>",  "<Click Button>", "<Click Div>", "<Click Form>",
      "<Click Input>", "<Click Option>", "<Click Select>", "<Click Other>",
-     "<Type Text>", "<Type Enter>", "<Action Forward>", "<Action Back>", 
+     "<Type Text>", "<Action Key>", "<Action Forward>", "<Action Back>", 
      "<Action Google_Search>", "<Action Navigate>", "<Action Home>", 
      "<Click TextArea>", "<null>"
      };
@@ -34,7 +34,7 @@ public class TokenParse {
     int SELECT = 10;
     int OTHER = 11;
     int TEXT = 12;
-    int ENTER = 13;
+    int KEY = 13;
     int FORWARD = 14;
     int BACK = 15;
     int SEARCH = 16;

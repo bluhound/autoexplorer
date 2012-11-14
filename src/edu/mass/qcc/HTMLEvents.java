@@ -178,7 +178,9 @@ public class HTMLEvents {
                 String iType = target.getAttribute("type");
                 String iValue = target.getAttribute("value");
                 String iId = target.getId();
-                String[] elements = {tp.parseToken[tp.INPUT], tagName, iId, iName, iType, iValue};
+                String iForm = target.getAttribute("form");
+                String iClass = target.getClassName();
+                String[] elements = {tp.parseToken[tp.INPUT], tagName, iId, iName, iType, iValue, iForm, iClass};
                 tokenString = tp.tokenize(elements);
                 
                 SwingUtilities.invokeLater(new Runnable() {
