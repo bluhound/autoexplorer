@@ -22,6 +22,9 @@ public class SHFile {
     
     autoexplorer ax;
     
+    SHFile(){
+    
+    }
     SHFile(autoexplorer Ax){
         
         ax = Ax;
@@ -71,7 +74,25 @@ public class SHFile {
     }        
     return 0;    
     }
-    
+    public String open(int Option){
+        
+        //Get the users file selection and gives it the name fileChooser:
+        JFileChooser fileChooser = new JFileChooser();
+        
+        //Get the return value of fileChooser so that we can make sure
+        //no errors have happened.
+        int returnValue = fileChooser.showOpenDialog(null);
+        
+        //Use that value to check for error and continue if none.
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+        
+        //Get the name of the file the user picked:
+        File selectedFile = fileChooser.getSelectedFile();
+        return selectedFile.getAbsolutePath().toString();
+        }
+        return "-1";
+        
+    }
     /*
      * Saves the script area text in a file.
      */

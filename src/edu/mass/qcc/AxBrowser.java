@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.SwingUtilities;
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
 import org.w3c.dom.html.HTMLElement;
@@ -306,13 +305,16 @@ public class AxBrowser {
          HTMLElement target = (HTMLElement) event.getTarget();
          //Send target to HTMLEvent for processing
          String tagName = target.getNodeName().toLowerCase();
-         if (tagName.equals("input") || tagName.equals("textarea")){
+         
+         if (tagName.equals("input") || tagName.equals("textarea") || tagName.equals("select")){
              documentElement.addEventListener("change", changeEventListener, false);
                        
          }
          else {
          htmlEvent.processThis(ax, target, documentElement);
          }
+         
+         
          
      }
  };
@@ -341,7 +343,7 @@ public class AxBrowser {
                 public void handleEvent(Event evt) {
                 
                  System.out.println("Focused in, add click and text change listener");
-                 documentElement.addEventListener("change", changeEventListener, false);
+                 //documentElement.addEventListener("change", changeEventListener, false);
                  documentElement.addEventListener("click", clickEventListener, false);
  
             }
@@ -373,7 +375,7 @@ public class AxBrowser {
        //Navigate to our home screen and wait for it to be ready.
        ax.browser.navigate(home);
        ax.browser.waitReady();
-       ax.browser.refresh();
+       
        
        //Change the tab text to current page
         SwingUtilities.invokeLater(new Runnable() {

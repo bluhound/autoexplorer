@@ -135,7 +135,7 @@ public class autoexplorer extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Autoexplorer Alpha Version 0.94");
+        setTitle("Autoexplorer Alpha Version 0.95");
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1200, 700));
         setName("Main"); // NOI18N

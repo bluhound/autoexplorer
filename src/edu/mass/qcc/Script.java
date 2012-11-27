@@ -13,7 +13,7 @@ public class Script {
     String GS = "Generating Script for--->";
     char COMMENT = '#';
     char NEWLINE = '\n';
-    Script(){
+    public Script(){
     }
     /*
      * private String getScriptForToken(String pt, String[] token)
@@ -22,7 +22,7 @@ public class Script {
      * generates a jRuby script.
      * 
      */
-    String getScriptForToken(String pt, String[] token) {
+    public String getScriptForToken(String pt, String[] token) {
             /* Generate a script for each token by searching the first
              * token in the array as an identifier.
              * The generated script is unique depending on the attributes of
@@ -30,90 +30,90 @@ public class Script {
              */
         
             if (tp.parseToken[tp.ANCHOR].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = anchor_handle(token);
                 return (pt);
                
             }
             else if (tp.parseToken[tp.KEY].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = key_handle(token);
                 return (pt);
             }
             
             else if (tp.parseToken[tp.IMAGE].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = image_handle(token);
                 return (pt);
             }
             else if (tp.parseToken[tp.LINK].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = navigate_handle(token);
                 return (pt);
             }    
             else if (tp.parseToken[tp.SPAN].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = span_handle(token);
                 return (pt);
             }    
             else if (tp.parseToken[tp.BUTTON].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = button_handle(token);
                 return (pt);
             }
             else if (tp.parseToken[tp.DIV].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = div_handle(token);
                 return (pt);
             }
             
             else if (tp.parseToken[tp.INPUT].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = input_handle(token);
                 return (pt);
             }
             else if (tp.parseToken[tp.OPTION].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = option_handle(token);
                 return (pt);
             }
             else if (tp.parseToken[tp.SELECT].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = select_handle(token);
                 return (pt);
             }
             else if (tp.parseToken[tp.OTHER].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 return (COMMENT + pt);
             }
             else if (tp.parseToken[tp.FORWARD].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = navigate_handle(token);
                 return (pt);
             }
             else if (tp.parseToken[tp.BACK].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = navigate_handle(token);
                 return (pt);
             }
             else if (tp.parseToken[tp.SEARCH].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = search_handle(token);
                 return (pt);
             }
             else if (tp.parseToken[tp.NAVIGATE].matches(pt)){
                 
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = navigate_handle(token);
                 return (pt);
             }
             else if (tp.parseToken[tp.HOME].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = navigate_handle(token);
                 return (pt);
             }
             else if (tp.parseToken[tp.TEXTAREA].matches(pt)){
-                System.out.print(GS + pt);
+                System.out.println(GS + pt);
                 pt = textarea_handle(token);
                 return (pt);
             }
@@ -163,7 +163,7 @@ public class Script {
         return (COMMENT + "Input type not yet implemented.");
     }
     
-    //Ian H.
+    
     private String button_handle(String token[]){
     if (tp.hasName(token)){
         return ("jrScript.find(\"button\").with(\"name=='"+ token[tp.NAME] + "'\").click()"); 
