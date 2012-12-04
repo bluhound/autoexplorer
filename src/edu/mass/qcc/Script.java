@@ -192,17 +192,52 @@ public class Script {
         int LINK = 3;
         return ("jrScript.open(\"" + token[LINK] + "\")");
     }
-    //em
+  
+    /**
+     * @ author Em Trieu
+     * @param String token is a list of HTML DOM element attribute.
+     * @return select script.
+     * 
+     * generate ruby code for select tag with InnerText, Id and Name.
+     */
     private String span_handle(String token[]) {
-        if(!token[3].equals("<null>"));
-        return ("jrScript.find(\"span\").with(\"innerText=='"+token[3]+"'\").click()");
-    }
-    //em
+        if (tp.hasInnerText(token))//Check for InnerText EM
+         {
+             return ("jrScript.find(\"span\").with(\"innerText=='"+token[tp.INNERTEXT]+"'\").click()");
+         } else if (tp.hasId(token)) //Check for Id EM
+            {
+             //else lookup by id
+             return  ("jrScript.find(\"span\").with(\"id=='"+token[tp.ID]+"'\").click()");
+             //otherwhise it lookup for name
+         } else if (tp.hasName(token))//Check for Name EM
+         {
+             return  ("jrScript.find(\"span\").with(\"name=='"+token[tp.NAME]+"'\").click()");
+          
+         } else //the attributes are not found, return comment EM
+         {
+             return (COMMENT + "Has no innerText, Id or Name so we can not find SPAN" + NEWLINE);
+         
+         }
+             }
+     /* @ author Em Trieu
+     * param String token is a list of HTML DOM element attribute.
+     * @return select script.
+     * 
+     * gennergate ruby code for select tag with InnerText, Id.
+     */
     private String div_handle(String token[]) {
-         if(!token[3].equals("<null>"));
-         return ("jrScript.find(\"div\").with(\"innerText=='"+token[3]+"'\").click()");
-        
-    }
+         
+         if (tp.hasInnerText(token))//Check for InnerText EM
+         {
+             return ("jrScript.find(\"div\").with(\"innerText=='"+token[tp.INNERTEXT]+"'\").click()");
+         } else if (tp.hasId(token))//Check for Id EM
+         {
+          return  ("jrScript.find(\"div\").with(\"id=='"+token[tp.ID]+"'\").click()");
+         } else // the attributes are not found, return comment EM
+         {
+          return (COMMENT + "Has no id or innertext so we can not find DIV" + NEWLINE);
+         } }
+   
     
     //james and khem
     private String option_handle(String token[]) {
