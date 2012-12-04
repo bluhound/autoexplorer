@@ -50,7 +50,10 @@ public class TokenParse {
     int TAGNAME = 1;
     int ID = 2;
     int NAME = 3;
-    int INNERTEXT = 3;
+    int ADDRESS = 1;
+    int TYPE = 2;
+    int VALUE = 3;
+    String FOUND = "Sending Found Token to Script--->";
   
     //try for the radio button
    
@@ -127,9 +130,9 @@ public class TokenParse {
        }
        return true;
    }
-   //@author EM Trieu
-    public Boolean hasInnerText(String[] tokenStr){
-       if (tokenStr[INNERTEXT].matches("null")){
+       
+   public Boolean hasAddress(String[] tokenStr){
+       if (tokenStr[ADDRESS].matches("null")){
        return false;
        }
        return true;
