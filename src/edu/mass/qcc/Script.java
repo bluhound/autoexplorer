@@ -192,17 +192,52 @@ public class Script {
         int LINK = 3;
         return ("jrScript.open(\"" + token[LINK] + "\")");
     }
-    //em
+  
+    /**
+     * @ author Em Trieu
+     * @param String token is a list of HTML DOM element attribute.
+     * @return select script.
+     * 
+     * generate ruby code for select tag with InnerText, Id and Name.
+     */
     private String span_handle(String token[]) {
-        if(!token[3].equals("<null>"));
-        return ("jrScript.find(\"span\").with(\"innerText=='"+token[3]+"'\").click()");
-    }
-    //em
+        if (tp.hasInnerText(token))//Check for InnerText EM
+         {
+             return ("jrScript.find(\"span\").with(\"innerText=='"+token[tp.INNERTEXT]+"'\").click()");
+         } else if (tp.hasId(token)) //Check for Id EM
+            {
+             //else lookup by id
+             return  ("jrScript.find(\"span\").with(\"id=='"+token[tp.ID]+"'\").click()");
+             //otherwhise it lookup for name
+         } else if (tp.hasName(token))//Check for Name EM
+         {
+             return  ("jrScript.find(\"span\").with(\"name=='"+token[tp.NAME]+"'\").click()");
+          
+         } else //the attributes are not found, return comment EM
+         {
+             return (COMMENT + "Has no innerText, Id or Name so we can not find SPAN" + NEWLINE);
+         
+         }
+             }
+     /* @ author Em Trieu
+     * param String token is a list of HTML DOM element attribute.
+     * @return select script.
+     * 
+     * gennergate ruby code for select tag with InnerText, Id.
+     */
     private String div_handle(String token[]) {
-         if(!token[3].equals("<null>"));
-         return ("jrScript.find(\"div\").with(\"innerText=='"+token[3]+"'\").click()");
-        
-    }
+         
+         if (tp.hasInnerText(token))//Check for InnerText EM
+         {
+             return ("jrScript.find(\"div\").with(\"innerText=='"+token[tp.INNERTEXT]+"'\").click()");
+         } else if (tp.hasId(token))//Check for Id EM
+         {
+          return  ("jrScript.find(\"div\").with(\"id=='"+token[tp.ID]+"'\").click()");
+         } else // the attributes are not found, return comment EM
+         {
+          return (COMMENT + "Has no id or innertext so we can not find DIV" + NEWLINE);
+         } }
+   
     
     //james and khem
     private String option_handle(String token[]) {
@@ -225,42 +260,18 @@ public class Script {
             return ("jrScript.open(\"" + token[tp.ADDRESS] + "\")");
         } else  {
             return (COMMENT + "Address can not be found" + NEWLINE);
-        }
-      //  int ADDRESS = 1;
-       // return ("jrScript.open(\"" + token[ADDRESS] + "\")");
     }
-    /**
-     * @Chris, Em, Rohit
-     * @Parameter token
-     * Return the select script jRuby
-     **/
-    private String textarea_handle(String token[]) {
-        if (tp.hasId(token)){
-        return ("jrScript.find(\"textarea\").with(\"id=='" + token[tp.ID]+"'");
-        } else if (tp.hasName(token)){
-            return ("jrScript.find(\"textarea\").with(\"Name=='" + token[tp.NAME]+"'");
-        } else if (tp.hasType(token)){ 
-            return ("jrScript.find(\"textarea\").with(\"Type=='" + token[tp.TYPE]+"'");
-        } else if (tp.hasValue(token)){
-            return ("jrScript.find(\"textarea\").with(\"Value=='" + token[tp.VALUE]+"'");
-        } else { return (COMMENT + "Has no id, Name, Type, or Value so we canot find text area" + NEWLINE);
-              
+      
+    }
     
-    }}
-    /** 
-     * @Em, Chris, Rohit
-     * @Parameter token
-     * @return select script jRuby
-     **/ 
+    private String textarea_handle(String token[]) {
+        
+        return ("jrScript.find(\"textarea\").with(\"name=='" + token[tp.NAME] + "'\").value='" + token[5] + "'");
+    
+    }
     private String search_handle(String token[]) {
-        if (tp.hasAddress(token))
-        {
-            return ("jrScript.open(\"" + token[tp.ADDRESS] + "\")");
-        } else  {
-            return (COMMENT + "Address can not be found" + NEWLINE);
-        }
-        //int ADDRESS = 1;
-        //return ("jrScript.open(\"" + token[ADDRESS] + "\")");
+        int ADDRESS = 1;
+        return ("jrScript.open(\"" + token[ADDRESS] + "\")");
     
     }
     private String key_handle(String token[]) {
