@@ -4,9 +4,13 @@
  */
 package edu.mass.qcc;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
- * @author Qcc 207
+ * @author Em 
  */
 public class Player {
     
@@ -18,7 +22,12 @@ public class Player {
     SHFile shfile = new SHFile();
     fname = shfile.open(1);
     if (!"-1".equals(fname)){
-    //Send filename to the webspec player
+            try {
+                //Send filename to the webspec player
+                    Runtime.getRuntime().exec("cmd C:\\Users\\Em\\Documents\\NetBeansProjects\\Watij\\Webspec\\console " + fname);
+            } catch (IOException ex) {
+                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            }
         
     
     }
