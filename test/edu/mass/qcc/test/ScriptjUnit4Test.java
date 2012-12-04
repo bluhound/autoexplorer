@@ -39,7 +39,10 @@ public class ScriptjUnit4Test {
         Script script = new Script();
         String result = script.getScriptForToken("<Click Button>", tokenButton);
         assertEquals(expResult,result);
-
+        
+        
+        
+      
     }
      @AfterClass
     public static void tearDownClass() {

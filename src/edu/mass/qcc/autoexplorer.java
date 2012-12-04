@@ -255,6 +255,11 @@ public class autoexplorer extends javax.swing.JFrame {
         playButton.setFocusable(false);
         playButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         playButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        playButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playButtonActionPerformed(evt);
+            }
+        });
         jToolBar1.add(playButton);
 
         pauseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/pause.png"))); // NOI18N
@@ -492,6 +497,11 @@ OptionPane op = new OptionPane();
                            }
                 });
     }//GEN-LAST:event_addTabButtonActionPerformed
+
+    private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
+    //em
+        Player player = new Player();
+    }//GEN-LAST:event_playButtonActionPerformed
 
     /**
      * @param args the command line arguments
