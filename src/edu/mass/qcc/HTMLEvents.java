@@ -96,7 +96,6 @@ public class HTMLEvents {
                 }
                 
                 //Look for child in span
-                //@uathor EM Trieu
                 else if (("span").equals(tagName)){
                 String sName = target.getTextContent();
                 String[] elements = {tp.parseToken[tp.SPAN], tagName, id, sName};
@@ -125,7 +124,6 @@ public class HTMLEvents {
         });
                 }
                 //Display div
-                //@uathor EM Trieu
                 else if (("div").equals(tagName)){
                
                 String dClass = target.getClassName();

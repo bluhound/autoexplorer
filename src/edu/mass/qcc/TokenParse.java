@@ -17,7 +17,7 @@ public class TokenParse {
      "<Click Input>", "<Click Option>", "<Click Select>", "<Click Other>",
      "<Type Text>", "<Action Key>", "<Action Forward>", "<Action Back>", 
      "<Action Google_Search>", "<Action Navigate>", "<Action Home>", 
-     "<Click TextArea>", "<null>",
+     "<Click TextArea>", "<null>"
      };
     //Index for the parseTokens[]
     
@@ -43,17 +43,11 @@ public class TokenParse {
     int TEXTAREA = 19;
     int NULL = 20;
     
-
-    
     //Element index
     int TOKEN = 0;
     int TAGNAME = 1;
     int ID = 2;
     int NAME = 3;
-    int INNERTEXT = 3;
-  
-    //try for the radio button
-   
     String FOUND = "Sending Found Token to Script--->";
     
     public TokenParse(){
@@ -127,13 +121,5 @@ public class TokenParse {
        }
        return true;
    }
-   //@author EM Trieu
-    public Boolean hasInnerText(String[] tokenStr){
-       if (tokenStr[INNERTEXT].matches("null")){
-       return false;
-       }
-       return true;
-   }
-   
     
 }
