@@ -51,6 +51,11 @@ public class ScriptJUnit4Test {
         String resultDiv = script.getScriptForToken("<Click Div>", tokenDiv);
         assertEquals(expResultDiv,resultDiv);
         //test searchbox
+        /**
+         * @author Chris
+         * Test of equal method , of class ScriptJUnit4Test
+         * if the method is true so the test passed otherwise the test is fail
+         */
         System.out.println("* ScriptJUnit4Test : getScriptForToken");
         TokenParse tpS =new TokenParse();
         String[] tokenSearch = {"<Action Google_Search>::", "www.google.com" };
