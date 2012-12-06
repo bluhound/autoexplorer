@@ -50,6 +50,16 @@ public class ScriptJUnit4Test {
          
         String resultDiv = script.getScriptForToken("<Click Div>", tokenDiv);
         assertEquals(expResultDiv,resultDiv);
+        //test searchbox
+        System.out.println("* ScriptJUnit4Test : getScriptForToken");
+        TokenParse tpS =new TokenParse();
+        String[] tokenSearch = {"<Action Google_Search>::", "www.google.com" };
+      
+        String expResultS = ("jrScript.open(\"" + "file:///C:/Users/Chris/Documents/NetBeansProjects/autoexplorer/src/edu/mass/qcc/SearchBox.html" + "\")");
+        Script scriptS = new Script();
+        String resultS = script.getScriptForToken(("jrScript.open(\"file:///C:/Users/Chris/Documents/NetBeansProjects/autoexplorer/src/edu/mass/qcc/SearchBox.html\")"), tokenSearch);
+        assertEquals(expResultS,resultS);
+
         
         
          
