@@ -10,7 +10,8 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Em 
+ * @author Em
+ * @author Chris
  */
 public class Player {
     
@@ -24,7 +25,7 @@ public class Player {
     if (!"-1".equals(fname)){
             try {
                 //Send filename to the webspec player
-                    Runtime.getRuntime().exec("cmd C:\\Users\\Em\\Documents\\NetBeansProjects\\Watij\\Webspec\\console " + fname);
+                    Runtime.getRuntime().exec("cmd C:\\Users\\Chris\\Desktop\\webspec\\console " + fname);
             } catch (IOException ex) {
                 Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
             }
