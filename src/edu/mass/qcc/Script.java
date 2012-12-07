@@ -248,15 +248,11 @@ public class Script {
     
     //james and khem
     private String option_handle(String token[]) {
-        if (tp.hasName(token)&&!"".equals(token[3]))//Check for name JT
+        if (tp.hasName(token)&&!"".equals(token[3])&&tp.hasValue(token))//Check for name JT
          {
-           return ("jrScript.find(\"option\").with(\"name=='"+token[tp.NAME]+"'\").click()");
-         } else if (tp.hasId(token)&&!"".equals(token[5]))//Check for Id JT
-             
-         {
-           return  ("jrScript.find(\"option\").with(\"value=='"+token[tp.VALUE]+"'\").click()");
-         }
-             
+           return ("jrScript.find(\"option\").with(\"name=='"+token[tp.NAME]+"'\").set(\"value='"+token[4]+"'\")");
+         } else 
+              
          {
           return (COMMENT + "Has no id or form so we can not find DIV" + NEWLINE);
          } 
