@@ -10,6 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import javax.swing.SwingUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.events.Event;
@@ -33,6 +40,8 @@ public class AxBrowser {
                 int TAGNAME = 1;
                 int ID = 2;
                 int VALUE = 5;
+      public String WebspecDirectory = "C:\\Program Files\\Webspec";
+      public String WebspecZipFile = "/edu/mass/qcc/res/webspec.zip";
             Boolean captureInput = false;
        autoexplorer ax;
            Document document;
@@ -49,9 +58,36 @@ public class AxBrowser {
      
       }
     
-    void open(){
+    void open() throws FileNotFoundException, IOException{
         
         //Setup
+        /**
+         * @author Chris and Em
+         * @param
+         * @Check for and install Webspec and settings file
+         */
+        System.out.println("Looking for ws DIR"); 
+        File dirfile = null;
+        try {
+            System.out.println("trying to open dir");
+            dirfile = new File(WebspecDirectory);
+            if (dirfile.isDirectory()){
+                System.out.println("yes");
+            }
+        } catch (Exception e) {
+        }
+        
+        Unzip unzip = new Unzip(); 
+        
+        
+        //trying to unzip
+            System.out.println("unzipping");
+        Runtime.getRuntime().exec("cmd cd C:\\program files\\webspec\\");
+        unzip.myunzip(WebspecZipFile);
+        
+        
+        
+        
         SwingUtilities.invokeLater(new Runnable() {
 
                         @Override
@@ -398,7 +434,7 @@ public class AxBrowser {
         
           
         
-    }       
+    }     
              
  
  
