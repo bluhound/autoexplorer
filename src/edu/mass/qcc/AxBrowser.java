@@ -66,6 +66,7 @@ public class AxBrowser {
          * @param
          * @Check for and install Webspec and settings file
          */
+        /*
         System.out.println("Looking for ws DIR"); 
         File dirfile = null;
         try {
@@ -85,7 +86,7 @@ public class AxBrowser {
         Runtime.getRuntime().exec("cmd cd C:\\program files\\webspec\\");
         unzip.myunzip(WebspecZipFile);
         
-        
+        */
         
         
         SwingUtilities.invokeLater(new Runnable() {
