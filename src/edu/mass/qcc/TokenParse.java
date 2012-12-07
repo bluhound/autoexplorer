@@ -49,6 +49,7 @@ public class TokenParse {
     int TOKEN = 0;
     int TAGNAME = 1;
     int ID = 2;
+    int HREF = 4;
     int NAME = 3;
     int INNERTEXT = 3;
     int ADDRESS = 1;
@@ -118,7 +119,14 @@ public class TokenParse {
         System.out.print(_tokenStr);
         return _tokenStr;
     }
-   public Boolean hasId(String[] tokenStr){
+  //Rohit Didwania
+     public Boolean hasHref(String[] tokenStr){
+       if (tokenStr[HREF].matches(parseToken[NULL])){
+       return false;
+       }
+       return true;
+     }
+    public Boolean hasId(String[] tokenStr){
        if (tokenStr[ID].matches(parseToken[NULL])){
        return false;
        }
