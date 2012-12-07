@@ -159,6 +159,10 @@ public class Script {
                 return ("jrScript.input.type(\"" + token[TYPE] + "').click()");
             case "file":
                 return ("jrScript.input.type(\"" + token[4] + "').click()");
+            case "option":
+                return ("jrScript.find(\"option\").with(\"innerText=='"+token[3]+"'\").click()");
+            case "select":
+                return ("jrScript.find(\"select\").with(\"innerText=='"+token[3]+"'\").click()");
         }
         return (COMMENT + "Input type not yet implemented.");
     }
@@ -183,9 +187,12 @@ public class Script {
     }
     //na
     private String image_handle(String token[]) {
-        
-        return ("jrScript.find(\"image\").with(\"src=='"+token[tp.ID]+"'\").click()");
-        
+        if(tp.hasId(token)&&!"".equals(token[tp.ID])){
+        return ("jrScript.find(\"image\").with(\"id=='"+token[tp.ID]+"'\").click()");
+        } else if(tp.hasimagSrc(token)){
+            return("jrscript.find(\"image\").with(\"imgSrc=='"+token[tp.Src]+"'\").click()");
+        } 
+        return"";
     }
     //Rohit
     private String link_handle(String token[]) {
@@ -241,13 +248,35 @@ public class Script {
     
     //james and khem
     private String option_handle(String token[]) {
-       if(!token[3].equals("<null>"));  
-        return ("jrScript.find(\"option\").with(\"innerText=='"+token[3]+"'\").click()");
+        if (tp.hasName(token)&&!"".equals(token[3]))//Check for name JT
+         {
+           return ("jrScript.find(\"option\").with(\"name=='"+token[tp.NAME]+"'\").click()");
+         } else if (tp.hasId(token)&&!"".equals(token[5]))//Check for Id JT
+             
+         {
+           return  ("jrScript.find(\"option\").with(\"value=='"+token[tp.VALUE]+"'\").click()");
+         }
+             
+         {
+          return (COMMENT + "Has no id or form so we can not find DIV" + NEWLINE);
+         } 
     }
+    
+
     //james and khem
     private String select_handle(String token[]) {
-       if(!token[3].equals("<null>")); 
-        return ("jrScript.find(\"select\").with(\"innerText=='"+token[3]+"'\").click()");
+       if (tp.hasName(token)&&!"".equals(token[3]))//Check for name JT
+         {
+           return ("jrScript.find(\"select\").with(\"name=='"+token[tp.NAME]+"'\").click()");
+         } else if (tp.hasId(token)&&!"".equals(token[5]))//Check for Id JT
+             
+         {
+           return  ("jrScript.find(\"select\").with(\"value=='"+token[tp.VALUE]+"'\").click()");
+         }
+             
+         {
+          return (COMMENT + "Has no id or form so we can not find DIV" + NEWLINE);
+         } 
     }
     /** 
      * @Chris Mitchell

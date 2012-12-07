@@ -52,6 +52,8 @@ public class TokenParse {
     int NAME = 3;
     int INNERTEXT = 3;
     int ADDRESS = 1;
+    int VALUE = 4;
+    int Src = 4;
   
     //try for the radio button
    
@@ -142,4 +144,31 @@ public class TokenParse {
        }
        return true;
        }
+    /* @ author James Ta
+     * @param String token is a list of HTML DOM element attribute.
+     * @return select script.
+     * 
+     * gennergate ruby code for option tag with Form, Id, Index, Text, Value.
+     */
+    public Boolean hasText(String[] tokenStr){
+       if (tokenStr[TEXT].matches("null")){
+       return false;
+       }
+       return true;
+   }
+    public Boolean hasValue(String[] tokenStr){
+       if (tokenStr[VALUE].matches("null")){
+       return false;
+       }
+       return true;
+   }
+    
+    public Boolean hasimagSrc(String[] tokenStr){
+       if (tokenStr[Src].matches(parseToken[NULL])){
+       return false;
+       }
+       return true;
+}
+
+    
 }

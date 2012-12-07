@@ -192,16 +192,13 @@ public class HTMLEvents {
             }
         });
                 } 
+                //Option Element
+                //James Ta
                 else if (tagName.equals("select")){
-                
-                String sForm = target.getAttribute("form");
-                String sLength = target.getAttribute("length");
-                String sMultiple= target.getAttribute("multiple");
-                String sName = target.getAttribute("name");
-                String sSelectIndex = target.getAttribute("selectindex");
-                String sSize = target.getAttribute("size");
-                String sType = target.getAttribute("type");
-                String[] elements = {tp.parseToken[tp.SELECT], tagName, id, sName, sForm, sLength, sMultiple, sSelectIndex, sSize, sType};
+               
+                String oName= target.getAttribute("name");
+                String oValue = target.getAttribute("value");
+                String[] elements = {tp.parseToken[tp.OPTION], tagName, id, oName, oValue};
                 tokenString = tp.tokenize(elements);
                 
                 SwingUtilities.invokeLater(new Runnable() {
@@ -211,15 +208,31 @@ public class HTMLEvents {
             }
         });
                 }
+
                 //Option Element
-                //NHUT TA
+                //James Ta
                 else if (tagName.equals("option")){
-                
-                String oForm = target.getAttribute("form");
-                String oIndex = target.getAttribute("index");
-                String oText= target.getAttribute("text");
+               
+                String oName= target.getAttribute("name");
                 String oValue = target.getAttribute("value");
-                String[] elements = {tp.parseToken[tp.OPTION], tagName, id, oForm, oIndex, oText, oValue};
+                String[] elements = {tp.parseToken[tp.OPTION], tagName, id, oName, oValue};
+                tokenString = tp.tokenize(elements);
+                
+                SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                ax.consoleTextArea.setText(tokenString);
+            }
+        });
+                }
+                
+                //Select Element
+                //James Ta
+                else if (tagName.equals("select")){
+               
+                String oName= target.getAttribute("name");
+                String oValue = target.getAttribute("value");
+                String[] elements = {tp.parseToken[tp.SELECT], tagName, id, oName, oValue};
                 tokenString = tp.tokenize(elements);
                 
                 SwingUtilities.invokeLater(new Runnable() {

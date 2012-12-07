@@ -50,6 +50,36 @@ public class ScriptJUnit4Test {
          
         String resultDiv = script.getScriptForToken("<Click Div>", tokenDiv);
         assertEquals(expResultDiv,resultDiv);
+        
+                //Test Option
+        System.out.println("*ScriptJUnit4Test : getScriptForToken()");
+        TokenParse tpOption = new TokenParse();
+        String[] tokenOption = {"<Click Option>","","","James",""};
+        String expResultOption = "jrScript.find(\"option\").with(\"name=='James'\").click()";
+        Script scriptOption = new Script();
+        String resultOption = script.getScriptForToken("<Click Option>", tokenOption);
+        assertEquals(expResultOption,resultOption);
+        
+        //Test Select
+        System.out.println("*ScriptJUnit4Test : getScriptForToken()");
+        TokenParse tpSelect = new TokenParse();
+        String[] tokenSelect = {"<Click Select>","","","James",""};
+        String expResultSelect = "jrScript.find(\"select\").with(\"name=='James'\").click()";
+        Script scriptSelect = new Script();
+        String resultSelect = script.getScriptForToken("<Click Select>", tokenSelect);
+        assertEquals(expResultSelect,resultSelect);
+        
+        // Test Image
+        String[] tokenImage = {"<Click Image>", "", "a3", "", "http://www.a3-india.com/img_wallpapers/a3_wall05_800.jpg"};
+        String expResultId= ("jrScript.find(\"image\").with(\"id=='" + "a3" + "'\").click()");
+        String resultID = script.getScriptForToken("<Click Image>", tokenImage);
+        assertEquals(expResultId,resultID);
+        //Test Image.Src
+        
+        String expResultSrc = ("jrScript.find(\"image\").with(\"imgSrc=='" + "http://www.a3-india.com/img_wallpapers/a3_wall05_800.jpg" + "'\").click()");
+        String resultSrc = script.getScriptForToken("<Click Image>", tokenImage);
+        assertEquals(expResultSrc, resultSrc);
+        
         //test searchbox
         /**
          * @author Chris
