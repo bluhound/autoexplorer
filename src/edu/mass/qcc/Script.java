@@ -176,10 +176,32 @@ public class Script {
     
     }
     
-    //Rohit
-    private String anchor_handle(String token[]) {
-    int HREF = 4;    
-        return ("jrScript.open(\"" + token[HREF] + "\")");
+   /* @ author Rohit Didwania
+     * param Anchor handle is a list of HTML DOM elements attribute. 
+     * @return Anchor Handle script
+     * 
+     * generates JRuby Script for anchor handle with ID, HREF and NAME.
+     */
+    private String anchor_handle(String token[]) { 
+    if (tp.hasId(token))//int HREF = 4;
+    { return ("jrScript.open(\"" + token[tp.ID] + "\")"); 
+    
+    } else if (tp.hasHref(token)){
+        return ("jrScript.open(\"" + token[tp.HREF] + "\")");
+    } else if (tp.hasName(token)) {
+        return ("jrScript.open(\"" + token[tp.NAME] + "\")");
+    } else {
+        return (COMMENT + "Has no id,name or href");
+    }
+   
+    
+
+
+
+
+
+
+
     }
     //na
     private String image_handle(String token[]) {
