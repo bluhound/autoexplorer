@@ -8,15 +8,13 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Em
- * @author Chris
- */
+
 public class Player {
     
     /*
-     * Opens a script file and plays it using watij jRuby
+     * @author Em and Chris
+     * @param
+     * @Opens a script file and plays it using watij jRuby
      */
     Player(){
     String fname = "";

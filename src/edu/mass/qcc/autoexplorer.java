@@ -7,6 +7,8 @@ import com.teamdev.jxbrowser.prompt.CloseStatus;
 import com.teamdev.jxbrowser.prompt.DefaultPromptService;
 import com.teamdev.jxbrowser.prompt.ScriptErrorParams;
 import java.awt.AWTException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
@@ -76,7 +78,14 @@ public class autoexplorer extends javax.swing.JFrame {
          * 
          */ 
         axBrowser = new AxBrowser(this);
-        axBrowser.open();
+        try {
+            axBrowser.open();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(autoexplorer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(autoexplorer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         jSplitPane1.setResizeWeight(.5); 
         recordingLabel.setVisible(false);
         
