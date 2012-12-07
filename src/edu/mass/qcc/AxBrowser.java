@@ -306,7 +306,7 @@ public class AxBrowser {
          //Send target to HTMLEvent for processing
          String tagName = target.getNodeName().toLowerCase();
          
-         if (tagName.equals("input") || tagName.equals("textarea") || tagName.equals("select")){
+         if (tagName.equals("input") || tagName.equals("textarea")){
              documentElement.addEventListener("change", changeEventListener, false);
                        
          }
