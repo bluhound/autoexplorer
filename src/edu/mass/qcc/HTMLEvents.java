@@ -192,27 +192,10 @@ public class HTMLEvents {
             }
         });
                 } 
-                //Option Element
-                //James Ta
-                else if (tagName.equals("select")){
-               
-                String oName= target.getAttribute("name");
-                String oValue = target.getAttribute("value");
-                String[] elements = {tp.parseToken[tp.OPTION], tagName, id, oName, oValue};
-                tokenString = tp.tokenize(elements);
                 
-                SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                ax.consoleTextArea.setText(tokenString);
-            }
-        });
-                }
-
                 //Option Element
-                //James Ta
+                //@author James Ta
                 else if (tagName.equals("option")){
-               
                 String oName= target.getAttribute("name");
                 String oValue = target.getAttribute("value");
                 String[] elements = {tp.parseToken[tp.OPTION], tagName, id, oName, oValue};
@@ -227,12 +210,11 @@ public class HTMLEvents {
                 }
                 
                 //Select Element
-                //James Ta
+                //@author Khem Bastola
                 else if (tagName.equals("select")){
-               
-                String oName= target.getAttribute("name");
-                String oValue = target.getAttribute("value");
-                String[] elements = {tp.parseToken[tp.SELECT], tagName, id, oName, oValue};
+                String sName= target.getAttribute("name");
+                String sValue = target.getAttribute("value");
+                String[] elements = {tp.parseToken[tp.SELECT], tagName, id, sName, sValue};
                 tokenString = tp.tokenize(elements);
                 
                 SwingUtilities.invokeLater(new Runnable() {
