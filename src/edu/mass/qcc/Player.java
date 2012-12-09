@@ -23,7 +23,7 @@ public class Player {
     if (!"-1".equals(fname)){
             try {
                 //Send filename to the webspec player
-                    Runtime.getRuntime().exec("cmd C:\\Users\\Chris\\Desktop\\webspec\\console " + fname);
+                    Runtime.getRuntime().exec("cmd C:\\webspec" + fname);
             } catch (IOException ex) {
                 Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
             }
