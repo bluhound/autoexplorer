@@ -20,11 +20,16 @@ public class HTMLEvents {
     HTMLEvents(){
     
     }
-    /*
+    /**
      * processThis(autoexplorer AX, HTMLElement target)
      * Checks that an element exists and turns the element atrributes into
      * a token string by calling the tokenize method from the TokenParse class
      * 
+     *
+     * @param AX
+     * @param target
+     * @param domElement
+     * @return 
      */
     int processThis(autoexplorer AX, HTMLElement target, DOMElement domElement){
         ax = AX;

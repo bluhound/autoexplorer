@@ -4,6 +4,17 @@
  */
 package edu.mass.qcc;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Ian
@@ -29,12 +40,14 @@ public class OptionPane extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        hpText = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
         password_enter = new javax.swing.JButton();
         password_textbox = new javax.swing.JPasswordField();
+        jLabel8 = new javax.swing.JLabel();
+        hpChangeButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         cbPopup = new javax.swing.JCheckBox();
         cbJava = new javax.swing.JCheckBox();
@@ -49,6 +62,7 @@ public class OptionPane extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Options");
+        setAlwaysOnTop(true);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Startup"));
 
@@ -67,10 +81,18 @@ public class OptionPane extends javax.swing.JFrame {
             }
         });
 
-        password_textbox.setText("jPasswordField1");
         password_textbox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 password_textboxActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Change Password");
+
+        hpChangeButton.setText("Change");
+        hpChangeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hpChangeButtonActionPerformed(evt);
             }
         });
 
@@ -79,23 +101,31 @@ public class OptionPane extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel8)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jCheckBox1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(password_textbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(password_textbox, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(password_enter)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jCheckBox1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                                .addGap(79, 79, 79)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(hpText)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(hpChangeButton)))
+                        .addGap(14, 14, 14))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,25 +133,25 @@ public class OptionPane extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(hpText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hpChangeButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBox1)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 2, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addContainerGap())
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(password_textbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(password_enter))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jLabel2)
+                    .addComponent(jButton1))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(password_textbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(password_enter)
+                    .addComponent(jLabel8))
+                .addGap(0, 13, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("General"));
+
+        cbPopup.setSelected(true);
+
+        cbJava.setSelected(true);
 
         jLabel3.setText("Turn of Pop-ups");
 
@@ -138,7 +168,7 @@ public class OptionPane extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(cbPopup)
@@ -151,16 +181,16 @@ public class OptionPane extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(cbConsole)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(cbDOM)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(cbHTML)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(cbDOM)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(0, 0, 0))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,11 +202,11 @@ public class OptionPane extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbJava)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbConsole)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbHTML)
                     .addComponent(jLabel6))
@@ -226,10 +256,106 @@ public class OptionPane extends javax.swing.JFrame {
     }//GEN-LAST:event_password_textboxActionPerformed
 
     private void password_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password_enterActionPerformed
-        String password; 
-        password = password_textbox.getText();
+        String password;
+        InputStream in = null;
+                try {
+                    
+                    
+                    in = new FileInputStream("c:/ae/settings/setting.txt");
+                } catch (FileNotFoundException fileNotFoundException) {
+                    System.out.println("File Not Found!");
+                }
+                    
+                    Scanner scanner = new Scanner(in);
+                    
+                    while (scanner.hasNext()){ 
+                        
+                        String[] Settings = scanner.nextLine().split(":");
+                        password = Settings[1];
+                        String hp = Settings[3];
+                        System.out.println(password);
+                         
+                        Settings[1]=password_textbox.getText();
+            try {
+                in.close();
+            } catch (IOException ex) {
+                Logger.getLogger(OptionPane.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                        for (int i=0; i< Settings.length;i++){
+                        Writer w = null;
+                            try {
+                                w = new FileWriter("c:/ae/settings/setting.txt");
+                            } catch (IOException ex) {
+                                Logger.getLogger(OptionPane.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            try {
+                                w.write("Password:"+Settings[1]+":Homepage:"+Settings[3]+":Runs:1\n");
+                            } catch (IOException ex) {
+                                Logger.getLogger(OptionPane.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            try {
+                                w.close();
+                            } catch (IOException ex) {
+                                Logger.getLogger(OptionPane.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                    
+                        }
+                    }
         
     }//GEN-LAST:event_password_enterActionPerformed
+
+    private void hpChangeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hpChangeButtonActionPerformed
+    String hp;
+        InputStream in = null;
+                try {
+                    
+                    
+                in = new FileInputStream("c:/ae/settings/setting.txt");
+                } catch (FileNotFoundException fileNotFoundException) {
+                    System.out.println("File Not Found!");
+                }
+                    
+                    Scanner scanner = new Scanner(in);
+                    
+                    while (scanner.hasNext()){ 
+                        
+                        String[] Settings = scanner.nextLine().split(":");
+                        hp = hpText.getText();
+                        String pw = Settings[1];
+                        System.out.println(hp);
+                         
+                       
+                        
+            try {
+                in.close();
+            } catch (IOException ex) {
+                Logger.getLogger(OptionPane.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                        for (int i=0; i< Settings.length;i++){
+                        Writer w = null;
+                            try {
+                                w = new FileWriter("c:/ae/settings/setting.txt");
+                            } catch (IOException ex) {
+                                Logger.getLogger(OptionPane.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            try {
+                                w.write("Password:"+pw+":Homepage:"+hp+":Runs:1\n");
+                            } catch (IOException ex) {
+                                Logger.getLogger(OptionPane.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            try {
+                                w.close();
+                            } catch (IOException ex) {
+                                Logger.getLogger(OptionPane.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                    
+                        }
+                    }
+        
+                    
+                    
+    
+    }//GEN-LAST:event_hpChangeButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,6 +397,8 @@ public class OptionPane extends javax.swing.JFrame {
     private javax.swing.JCheckBox cbHTML;
     private javax.swing.JCheckBox cbJava;
     private javax.swing.JCheckBox cbPopup;
+    private javax.swing.JButton hpChangeButton;
+    private javax.swing.JTextField hpText;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
@@ -280,10 +408,10 @@ public class OptionPane extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton password_enter;
     private javax.swing.JPasswordField password_textbox;
     // End of variables declaration//GEN-END:variables

@@ -13,44 +13,52 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.Writer;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
+import org.w3c.dom.html.HTMLDocument;
 import org.w3c.dom.html.HTMLElement;
 
 
 /**
  *
  * @author Ian Hickey
+ * Sets up a new browser and adds all listeners.
  */
 public class AxBrowser {
     //Common Variables
-    //import org.watij.webspec.dsl.WebSpec;
-     public String  tokenString = "";
-     public String  newline = "\n";
-     public String  home = "http://www.google.com";
-     public String  delim = "::";
+    
+      public String  tokenString = "";
+      public String  newline = "\n";
+     private String  home = "";
+      public String  delim = "::";
+      public String settingsPath = "c:\\ae\\settings";
     public String[] tkString;
       public String eValue;
                 int TAGNAME = 1;
                 int ID = 2;
                 int VALUE = 5;
-      public String WebspecDirectory = "C:\\Program Files\\Webspec";
-      public String WebspecZipFile = "/edu/mass/qcc/res/webspec.zip";
+            private String password = "";
             Boolean captureInput = false;
        autoexplorer ax;
            Document document;
          HTMLEvents htmlEvent = new HTMLEvents();
          DOMElement documentElement;
-         EventListener clickEventListener;
-         EventListener changeEventListener;
-         EventListener inEventListener;
-         EventListener outEventListener;
+      EventListener clickEventListener;
+      EventListener changeEventListener;
+      EventListener inEventListener;
+      EventListener outEventListener;
          
     AxBrowser(autoexplorer Ax){
     
@@ -60,33 +68,56 @@ public class AxBrowser {
     
     void open() throws FileNotFoundException, IOException{
         
-        //Setup
-        /**
-         * @author Chris and Em
-         * @param
-         * @Check for and install Webspec and settings file
-         */
-        /*
-        System.out.println("Looking for ws DIR"); 
-        File dirfile = null;
-        try {
-            System.out.println("trying to open dir");
-            dirfile = new File(WebspecDirectory);
-            if (dirfile.isDirectory()){
-                System.out.println("yes");
-            }
-        } catch (Exception e) {
+        //Call setup to get global settings and check if this is the first run.     
+        File settings = new File(settingsPath);
+        if (!settings.isDirectory()){
+        //then this is the first run...call setup
+        Setup firstrun = new Setup(this, ax);
+        }else{
+            //Get the settings from the file, if the file has dissappeared since
+            //first setup, recreate.
+            InputStream in = null;
+                try {
+                    
+                    File sFile = new File("c:\\AE\\settings\\setting.txt");
+                    if (!sFile.exists()){
+                        System.out.println("Creating Settings File with defaults.");
+                        sFile.createNewFile();
+                        Writer w = new FileWriter(sFile);
+                        w.append("Password:password:Homepage:www.google.com:Runs:1\n");
+                        w.close();
+                    
+                    }
+                    in = new FileInputStream("c:/ae/settings/setting.txt");
+                } catch (FileNotFoundException fileNotFoundException) {
+                    System.out.println("File Not Found!");
+                }
+                    
+                    Scanner scanner = new Scanner(in);
+                    
+                    while (scanner.hasNext()){ 
+                        
+                        String[] Settings = scanner.nextLine().split(":");
+                            password = Settings[1];
+                            setPassword(password);
+                            
+                        String homepage = Settings[3];
+                            System.out.println(homepage);
+                            setHome(homepage);
+                        
+                        in.close();
+                    
+                    }
         }
+        //Ask for password until the correct password is entered.
         
-        Unzip unzip = new Unzip(); 
+        Password pw = new Password();
+        
+            do {pw.showDialog();}
+            while (!(pw.pass.getText() == null ? password == null : pw.pass.getText().equals(password)));
         
         
-        //trying to unzip
-            System.out.println("unzipping");
-        Runtime.getRuntime().exec("cmd cd C:\\program files\\webspec\\");
-        unzip.myunzip(WebspecZipFile);
-        
-        */
+        //Add the browser into the browser Pane
         
         
         SwingUtilities.invokeLater(new Runnable() {
@@ -104,7 +135,9 @@ public class AxBrowser {
         //Action listeners start here.   //
         ///////////////////////////////////
         
-        //Get the current page status and display in the statusLabel
+        /**
+         * Get the current page status and display in the statusLabel
+         */
         ax.browser.addStatusListener(new StatusListener() {
         
         @Override
@@ -125,10 +158,17 @@ public class AxBrowser {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                
-                ax.browser.navigate(home);
+                 try {
+                     ax.browser.navigate(getHome());
+                 } catch (IOException ex) {
+                     Logger.getLogger(AxBrowser.class.getName()).log(Level.SEVERE, null, ex);
+                 }
                 ax.browser.waitReady();
-                tokenString = ("<Action Home>::" + home + delim);
+                 try {
+                     tokenString = ("<Action Home>::" + getHome() + delim);
+                 } catch (IOException ex) {
+                     Logger.getLogger(AxBrowser.class.getName()).log(Level.SEVERE, null, ex);
+                 }
                 
                 SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -138,7 +178,7 @@ public class AxBrowser {
         });
                     
                               
-    }});
+    }   });
         
         //Action Listener Go to a new http web address
          ax.goButton.addActionListener(new ActionListener(){
@@ -328,18 +368,21 @@ public class AxBrowser {
         
         document = ax.browser.getDocument();
         documentElement = (DOMElement) document.getDocumentElement();
-        
-        
         //Listener for element clicks
-        
         
         clickEventListener = new EventListener() {
 
          @Override
-     public void handleEvent(Event evt) {
+         public void handleEvent(Event evt) {
+         
          
          org.w3c.dom.events.MouseEvent event = (org.w3c.dom.events.MouseEvent) evt;
+         
          HTMLElement target = (HTMLElement) event.getTarget();
+         //NamedNodeMap t = target.getAttributes().;
+         //for (int i=0;i<t.getLength();i++){
+         //    System.out.println("Node: " + t.item(i).getNodeName());
+         //}
          //Send target to HTMLEvent for processing
          String tagName = target.getNodeName().toLowerCase();
          
@@ -410,9 +453,9 @@ public class AxBrowser {
         });
         
        //Navigate to our home screen and wait for it to be ready.
-       ax.browser.navigate(home);
+       ax.browser.navigate(getHome());
        ax.browser.waitReady();
-       
+       ax.conscriptPane.setVisible(false);
        
        //Change the tab text to current page
         SwingUtilities.invokeLater(new Runnable() {
@@ -422,7 +465,12 @@ public class AxBrowser {
         
         //Setup the ax.browser tab, html tab and addressbar
         ax.browserPane.setTitleAt(0,ax.browser.getTitle());
-        String stringToken1 = ("<Navigate Home>::" + home); 
+        String stringToken1 = null; 
+                try {
+                    stringToken1 = ("<Navigate Home>::" + getHome());
+                } catch (IOException ex) {
+                    Logger.getLogger(AxBrowser.class.getName()).log(Level.SEVERE, null, ex);
+                }
         ax.consoleTextArea.setText(stringToken1);
         //Put the current html address in the addressbar
         ax.addressBar.setText(ax.browser.getCurrentLocation());
@@ -430,12 +478,52 @@ public class AxBrowser {
                            }
                 });
         
+            }
+
+    /**
+     * @return the home page as listed in the settings file 
+     */
+    public String getHome() throws IOException {
+        try (FileInputStream in = new FileInputStream("c:/ae/settings/setting.txt")) {
+            Scanner scanner = new Scanner(in);
+            
+            while (scanner.hasNext()){ 
+                
+                String[] Settings = scanner.nextLine().split(":");
+                    String homepage = Settings[3];
+                    System.out.println(homepage);
+                    setHome(homepage);
+            }
         }
+        return home;
+    }
+
+    /**
+     * @param home the home to set
+     */
+    public void setHome(String home) {
+        this.home = home;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}
    
         
           
         
-    }     
+         
              
  
  

@@ -86,7 +86,7 @@ public class autoexplorer extends javax.swing.JFrame {
             Logger.getLogger(autoexplorer.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        jSplitPane1.setResizeWeight(.5); 
+        conscriptPane.setResizeWeight(.5); 
         recordingLabel.setVisible(false);
         
                 
@@ -108,7 +108,6 @@ public class autoexplorer extends javax.swing.JFrame {
         backButton = new javax.swing.JButton();
         forwardButton = new javax.swing.JButton();
         addressBar = new java.awt.TextField();
-        cbHistory = new javax.swing.JComboBox();
         goButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
         stopBrowserButton = new javax.swing.JButton();
@@ -122,7 +121,7 @@ public class autoexplorer extends javax.swing.JFrame {
         jToolBar2 = new javax.swing.JToolBar();
         jLabel2 = new javax.swing.JLabel();
         statusLabel = new javax.swing.JLabel();
-        jSplitPane1 = new javax.swing.JSplitPane();
+        conscriptPane = new javax.swing.JSplitPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         scriptTextArea = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -144,7 +143,7 @@ public class autoexplorer extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Autoexplorer Alpha Version 0.95");
+        setTitle("Autoexplorer Beta 1.0");
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1200, 700));
         setName("Main"); // NOI18N
@@ -201,7 +200,6 @@ public class autoexplorer extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(addressBar);
-        jToolBar1.add(cbHistory);
 
         goButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/forward.png"))); // NOI18N
         goButton.setFocusable(false);
@@ -303,7 +301,7 @@ public class autoexplorer extends javax.swing.JFrame {
         statusLabel.setPreferredSize(new java.awt.Dimension(248, 31));
         jToolBar2.add(statusLabel);
 
-        jSplitPane1.setResizeWeight(0.5);
+        conscriptPane.setResizeWeight(0.5);
 
         scriptTextArea.setColumns(20);
         scriptTextArea.setLineWrap(true);
@@ -311,7 +309,7 @@ public class autoexplorer extends javax.swing.JFrame {
         scriptTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder("Script"));
         jScrollPane3.setViewportView(scriptTextArea);
 
-        jSplitPane1.setRightComponent(jScrollPane3);
+        conscriptPane.setRightComponent(jScrollPane3);
 
         consoleTextArea.setColumns(20);
         consoleTextArea.setLineWrap(true);
@@ -319,19 +317,19 @@ public class autoexplorer extends javax.swing.JFrame {
         consoleTextArea.setBorder(javax.swing.BorderFactory.createTitledBorder("Console"));
         jScrollPane1.setViewportView(consoleTextArea);
 
-        jSplitPane1.setLeftComponent(jScrollPane1);
+        conscriptPane.setLeftComponent(jScrollPane1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1226, Short.MAX_VALUE)
+            .addComponent(conscriptPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1226, Short.MAX_VALUE)
             .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jSplitPane1)
+                .addComponent(conscriptPane)
                 .addGap(1, 1, 1)
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
@@ -375,7 +373,6 @@ public class autoexplorer extends javax.swing.JFrame {
         jMenu2.setText("Settings");
 
         CheckBoxShowConsole.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.ALT_MASK));
-        CheckBoxShowConsole.setSelected(true);
         CheckBoxShowConsole.setActionCommand("Close Console");
         CheckBoxShowConsole.setLabel("Show/Hide Console");
         CheckBoxShowConsole.addActionListener(new java.awt.event.ActionListener() {
@@ -444,7 +441,7 @@ public class autoexplorer extends javax.swing.JFrame {
         //Hide or display console/script pane
         if (!CheckBoxShowConsole.isSelected()){
             
-            jSplitPane1.setVisible(false);
+            conscriptPane.setVisible(false);
         
         }
         else {
@@ -453,7 +450,7 @@ public class autoexplorer extends javax.swing.JFrame {
 
                         @Override
                         public void run() {
-                jSplitPane1.setVisible(true);
+                conscriptPane.setVisible(true);
                             }
                 }); 
             
@@ -470,11 +467,14 @@ OptionPane op = new OptionPane();
 
     private void stopRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopRecordButtonActionPerformed
         recorder.stopRecording();
+        this.conscriptPane.setVisible(false);
     }//GEN-LAST:event_stopRecordButtonActionPerformed
 
     private void recordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordButtonActionPerformed
+        this.conscriptPane.setVisible(true);
         recorder = new Recorder(this);
         recorder.startRecording();
+        
     }//GEN-LAST:event_recordButtonActionPerformed
 
     private void addressBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addressBarMouseClicked
@@ -553,8 +553,8 @@ OptionPane op = new OptionPane();
     public java.awt.TextField addressBar;
     public javax.swing.JButton backButton;
     public javax.swing.JTabbedPane browserPane;
-    public javax.swing.JComboBox cbHistory;
     public javax.swing.JMenuItem closeFileMenuOption;
+    public javax.swing.JSplitPane conscriptPane;
     public javax.swing.JTextArea consoleTextArea;
     public javax.swing.JButton forwardButton;
     public javax.swing.JButton goButton;
@@ -575,7 +575,6 @@ OptionPane op = new OptionPane();
     public javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    public javax.swing.JSplitPane jSplitPane1;
     public javax.swing.JToolBar jToolBar1;
     public javax.swing.JToolBar jToolBar2;
     public javax.swing.JMenuItem openFileMenuOption;

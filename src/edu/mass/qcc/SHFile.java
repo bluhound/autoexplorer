@@ -130,6 +130,36 @@ public class SHFile {
         } 
     return 0;
     }
+    public void saveas(File file, String str){
+        
+    // Grab the text from the text area and save it to a file
+        String outTextToSave = str;   
+    
+    
+    //Again check for errors
+       
+        //Get the selected file 
+        File selectedFile = file;
+          
+                
+        //Try to print to the file using PrintWriter     
+    
+        try {
+                try (PrintWriter printWriter = new PrintWriter(selectedFile)) {
+                     printWriter.println(outTextToSave);
+                }
+            
+            //Show file was saved in scriptArea
+                System.out.println("File was saved.");
+           
+            
+            //Catch all errors and log them.
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(autoexplorer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        } 
+    
+    
 } 
     
 
