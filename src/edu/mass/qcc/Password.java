@@ -1,7 +1,7 @@
 
-/**
- *
- * @author James
+/**@author James and khem
+ * working on password for the users
+ * able to save their password for the users.
  */
 
  
@@ -74,14 +74,14 @@ public class Password extends JDialog {
         super(parent, title, true);
  
         setLocale(Locale.getDefault());
- 
+ // ask user to enter password kb and jt
         if (title==null){
             setTitle("Enter Password");
         }
         if (parent != null){
             setLocationRelativeTo(parent);
         }
-        // super calls dialogInit, so we don't need to do it again.
+        // super calls dialogInit, so we don't need to do it again kb and jt.
     }
  
     
@@ -95,7 +95,7 @@ public class Password extends JDialog {
     }
  
     @Override protected void dialogInit(){
- 
+ // sets the password to default if empty kb and jt
         if (labels == null){
             setLocale(Locale.getDefault());
         }
@@ -107,7 +107,7 @@ public class Password extends JDialog {
         passLabel = new JLabel(" ");
  
         super.dialogInit();
- 
+ // save user password if true and doesnot if false kb and jt
         KeyListener keyListener = (new KeyAdapter() {
             @Override public void keyPressed(KeyEvent e){
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE ||
@@ -124,12 +124,12 @@ public class Password extends JDialog {
             }
         });
         addKeyListener(keyListener);
- 
+ //records the action performed by the user's password entry kb and jt
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 Object source = e.getSource();
                  
-                    // other actions close the dialog.
+                    // other actions close the dialog kb abd jt
                     pressed_OK = (source == pass || source == okButton);
                     Password.this.setVisible(false);
                 

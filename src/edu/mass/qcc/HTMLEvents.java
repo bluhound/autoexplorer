@@ -199,7 +199,11 @@ public class HTMLEvents {
                 } 
                 
                 //Option Element
-                //@author James Ta
+                
+                /* @ aurhor khem and james
+                 * working on to get name, type and value
+                 * of a option if equal tagname
+                 */
                 else if (tagName.equals("option")){
                 String oName= target.getAttribute("name");
                 String oValue = target.getAttribute("value");
@@ -215,7 +219,11 @@ public class HTMLEvents {
                 }
                 
                 //Select Element
-                //@author Khem Bastola
+                /* @ aurhor khem and james
+                 * working on to get name, type and value
+                 * of a select if equal tagname
+                 */
+                
                 else if (tagName.equals("select")){
                 String sName= target.getAttribute("name");
                 String sValue = target.getAttribute("value");
