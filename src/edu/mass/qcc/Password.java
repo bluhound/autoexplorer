@@ -1,7 +1,7 @@
 
 /**@author James and khem
  * working on password for the users
- * able to save their password for the users.
+ * able to save their password .
  */
 
  
@@ -13,7 +13,9 @@ import java.util.*;
 import javax.swing.*;
 
 public class Password extends JDialog {
- 
+ /*passing the swings controls elements of string labels, pass, okButton,
+  cancelButton, namelabel,passLabel kb and jt.
+  */
     private static final long serialVersionUID = -832548326686122133L;
      
     protected ResourceBundle labels;
@@ -31,9 +33,10 @@ public class Password extends JDialog {
    
     
  
+   // passing all the string on the metods kb and jt
     
     public void setPass(String pass){
-        this.pass.setText(pass);
+        this.pass.setText(pass); 
     }
  
     public void setOKText(String ok){
@@ -60,7 +63,7 @@ public class Password extends JDialog {
     
  
     public String getPass(){
-        return new String(pass.getPassword());
+        return new String(pass.getPassword()); // creating password for user kb and jt
     }
  
     public boolean okPressed(){
@@ -69,6 +72,7 @@ public class Password extends JDialog {
  
     private boolean pressed_OK = false;
  
+    // passing the password to the method with the strings kb and jt.
     public Password(Frame parent, String title) {
  
         super(parent, title, true);
