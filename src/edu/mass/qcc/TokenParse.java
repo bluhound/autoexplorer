@@ -152,12 +152,7 @@ public class TokenParse {
        }
        return true;
        }
-    /* @ author James Ta
-     * @param String token is a list of HTML DOM element attribute.
-     * @return select script.
-     * 
-     * gennergate ruby code for option tag with Form, Id, Index, Text, Value.
-     */
+    //@ author James Ta & Khem
     public Boolean hasText(String[] tokenStr){
        if (tokenStr[TEXT].matches("null")){
        return false;
