@@ -25,17 +25,23 @@ public class Setup {
       public String WebspecDirectory = "C:/webspec";
       public String WebspecPath = "C:\\webspec\\";
       public String WebspecZipFile = "/edu/mass/qcc/res/webspec.zip";
-
+    /**
+     * Setup installs needed Directories and files for use by Autoexplorer.
+     * @param ax
+     * @param _ax
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     Setup(AxBrowser ax, autoexplorer _ax) throws FileNotFoundException, IOException{
         AxBrowser Ax = ax;
         autoexplorer au = _ax;
         System.out.println("Looking for WebSpec DIR"); 
         File dirfile = null;
-        
+            //Let user know what we are doing.  EM and Chris
             JOptionPane.showMessageDialog(au.browser.getComponent(), "Autoexplorer needs to install some files.");
                     
             System.out.println("Trying to open dir");
-            
+            //See if the directories exist. Em and Chris
             if (!new File(WebspecDirectory).exists()){
             dirfile = new File(WebspecDirectory);    
             System.out.println("DIR does not exist, creating...");
@@ -65,7 +71,7 @@ public class Setup {
                     zos.close();
                     in.close();
             
-                
+                //Unzip the files Chris and Em
                 Unzip unzip = new Unzip(); 
                 //trying to unzip
                 System.out.println("Unzipping...");
@@ -107,7 +113,7 @@ public class Setup {
                 }
                     
                     Scanner scanner = new Scanner(in);
-                    
+                    //Set the default password and homepage. Chris and Em
                     while (scanner.hasNext()){ 
                         
                         String[] Settings = scanner.nextLine().split(":");

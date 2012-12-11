@@ -21,13 +21,9 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
-import org.w3c.dom.html.HTMLDocument;
 import org.w3c.dom.html.HTMLElement;
 
 
@@ -65,7 +61,11 @@ public class AxBrowser {
         ax = Ax;
      
       }
-    
+    /**
+     * opens a new instance of Autoexplorer browser and attaches listeners.
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     void open() throws FileNotFoundException, IOException{
         
         //Call setup to get global settings and check if this is the first run.     
@@ -379,24 +379,20 @@ public class AxBrowser {
          org.w3c.dom.events.MouseEvent event = (org.w3c.dom.events.MouseEvent) evt;
          
          HTMLElement target = (HTMLElement) event.getTarget();
-         //NamedNodeMap t = target.getAttributes().;
-         //for (int i=0;i<t.getLength();i++){
-         //    System.out.println("Node: " + t.item(i).getNodeName());
-         //}
-         //Send target to HTMLEvent for processing
+         
          String tagName = target.getNodeName().toLowerCase();
          
-         if (tagName.equals("input") || tagName.equals("textarea")){
-             documentElement.addEventListener("change", changeEventListener, false);
+         //if (tagName.equals("input") || tagName.equals("textarea")){
+         documentElement.addEventListener("change", changeEventListener, false);
                        
-         }
-         else {
+         //}
+         //else {
          htmlEvent.processThis(ax, target, documentElement);
          }
          
          
          
-     }
+     //}
  };
                 
    

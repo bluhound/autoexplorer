@@ -13,6 +13,11 @@ import java.awt.event.KeyEvent;
 public class SendK {
     public SendK(){
     }
+    /**
+     * 
+     * @param key
+     * @throws AWTException 
+     */
     void type(String key) throws AWTException {
         Robot robot = new Robot();
     switch (key){

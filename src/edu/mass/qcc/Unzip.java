@@ -20,6 +20,9 @@ public class Unzip {
     private static String fn;
  
   /**
+   * Unzips a file for use by the program.
+   * @author Chris
+   * @author Em
    * @param zipFile
    * @param jiniHomeParentDir
    */
