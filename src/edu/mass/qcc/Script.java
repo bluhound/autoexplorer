@@ -13,7 +13,10 @@ public class Script {
     String GS = "Generating Script for--->";
     char COMMENT = '#';
     char NEWLINE = '\n';
+    private String linestr = new String();
+    
     public Script(){
+        linestr = "";
     }
     /*
      * private String getScriptForToken(String pt, String[] token)
@@ -123,49 +126,52 @@ public class Script {
             }
                
         }
-    /*
-     * Methods for generating element scripts begin here.
+    /**
+     * @Author CSC-207
+     * @param token
+     * @return 
      */
-    //Julion and John
     private String input_handle(String[] token){
         //Get the type of input, text, button, password, hidden, radio, reset, submit, file, etc.
         //Make sure id or name is not <null> by calling hasName and hasId
-        
+        //Julion and John
         int TYPE = 4;
         int VALUE = 5;
+        this.linestr = "";
         if ("<null>".equals(token[5])){}
         else{
         switch (token[TYPE]) {
             
-            case "text":
+            case "text"://Julion and John
                 if (tp.hasId(token)){
-                    return ("jrScript.input.id('" + token[tp.ID] + "').value ='" + token[VALUE] + "'");
+                    this.linestr = ("jrScript.input.id('".concat(token[tp.ID]).concat("').value ='").concat(token[VALUE]).concat("'"));
+                    System.out.println(getLine());
+                    return "";
                 }else if (tp.hasName(token)){
-                    return ("jrScript.input.name('" + token[tp.NAME] + "').value ='" + token[VALUE] + "'");
+                    this.linestr = ("jrScript.input.name('" + token[tp.NAME] + "').value ='" + token[VALUE] + "'");
+                    System.out.println(getLine());
+                    return "";
                 }else{ 
                     return (COMMENT + "Couldn't locate name or ID for element" + NEWLINE);}
             case "button":
                 if (tp.hasId(token)){
-                return ("jrScript.input.id(\"" + token[tp.ID] + "').click()");
+                return ("jrScript.input.id('" + token[tp.ID] + "').click()");
                 }
             case "password":
                 if (tp.hasId(token)){
-                return ("jrScript.input.id(\"" + token[tp.ID] + "').value ='" + token[VALUE] + "'");
+                setLine("jrScript.input.id('" + token[tp.ID] + "').value ='" + token[VALUE] + "'");
                 }
             case "hidden":
-                return ("jrScript.input.type(\"" + token[TYPE] + "').value =(\"" + token[VALUE] + "\").click()");
+                return ("jrScript.input.type('" + token[TYPE] + "').value =(\"" + token[VALUE] + "\").click()");
             case "submit":
                 if (tp.hasId(token)){
-                return ("jrScript.input.id(\"" + token[tp.ID] + "').click()");
+                return ("jrScript.input.id('" + token[tp.ID] + "').click()");
                 }
             case "checkbox":
-                return ("jrScript.input.type(\"" + token[TYPE] + "').click()");
+                return ("jrScript.input.type('" + token[TYPE] + "').click()");
             case "file":
-                return ("jrScript.input.type(\"" + token[4] + "').click()");
-            case "option":
-                return ("jrScript.find(\"option\").with(\"innerText=='"+token[3]+"'\").click()");
-            case "select":
-                return ("jrScript.find(\"select\").with(\"innerText=='"+token[3]+"'\").click()");
+                return ("jrScript.input.type('" + token[4] + "').click()");
+            
             default:
                 return (COMMENT + "Input type not yet implemented.");
         }
@@ -336,10 +342,27 @@ public class Script {
     }
     private String key_handle(String token[]) {
         if (token[1].equals("Enter")){
-        return ("wsh.sendkey('{ENTER}')");    
+        String returnValue = (getLine().concat("\n").concat("robot.keyPress(KeyEvent::VK_ENTER);"));    
+        
+        return (returnValue);// + "\n" + "robot.keyPress(KeyEvent::VK_ENTER);");    
         }
         else{
-        return ("wsh.sendkey('{TAB}')");
+        return (getLine());// + "\n" + "robot.keyPress(KeyEvent::VK_TAB);");
         }
+    }
+
+    /**
+     * @return the line
+     */
+    public String getLine() {
+        return linestr;
+    }
+
+    /**
+     * @param line the line to set
+     */
+    public void setLine(String line) {
+        this.linestr = line;
+        
     }
 }

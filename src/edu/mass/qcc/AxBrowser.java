@@ -6,6 +6,7 @@ import com.teamdev.jxbrowser.events.NavigationFinishedEvent;
 import com.teamdev.jxbrowser.events.NavigationListener;
 import com.teamdev.jxbrowser.events.StatusChangedEvent;
 import com.teamdev.jxbrowser.events.StatusListener;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,8 +23,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
+import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.html.HTMLElement;
 
 
@@ -55,6 +58,7 @@ public class AxBrowser {
       EventListener changeEventListener;
       EventListener inEventListener;
       EventListener outEventListener;
+      EventListener keyEventListener;
          
     AxBrowser(autoexplorer Ax){
     
@@ -130,7 +134,7 @@ public class AxBrowser {
                         
                            }
                 }); 
-    
+        
         ///////////////////////////////////
         //Action listeners start here.   //
         ///////////////////////////////////
@@ -368,6 +372,36 @@ public class AxBrowser {
         
         document = ax.browser.getDocument();
         documentElement = (DOMElement) document.getDocumentElement();
+        EventListener init = new EventListener() {
+
+         @Override
+         public void handleEvent(Event evt) {
+         HTMLElement t = (HTMLElement) evt.getTarget();
+         
+         
+         documentElement.addEventListener("change", changeEventListener, captureInput);
+        
+         
+         
+         
+     }
+ };
+        
+        documentElement.addEventListener("load",init,false);
+        
+        ((EventTarget) documentElement).addEventListener("click", new EventListener() {
+        public void handleEvent(Event evt) {
+            HTMLElement t = (HTMLElement) evt.getTarget();
+            System.out.println("Type = " + t.getNodeName());
+            
+            htmlEvent.processThis(ax, t, documentElement);
+            if ("textarea".equals(t.getNodeName().toLowerCase())){
+            documentElement.addEventListener("change", changeEventListener, captureInput);
+            }
+            
+    }
+}, false);
+        
         //Listener for element clicks
         
         clickEventListener = new EventListener() {
@@ -382,44 +416,55 @@ public class AxBrowser {
          
          String tagName = target.getNodeName().toLowerCase();
          
-         //if (tagName.equals("input") || tagName.equals("textarea")){
-         documentElement.addEventListener("change", changeEventListener, false);
+         if (tagName.equals("input")){
+         documentElement.addEventListener("keyup", keyEventListener, false);
                        
-         //}
-         //else {
+         }
+         
+         else {
          htmlEvent.processThis(ax, target, documentElement);
          }
          
          
          
-     //}
+     }
  };
                 
    
                 //Looks for changes in text.             
-                changeEventListener = new EventListener() {
+                keyEventListener = new EventListener() {
 
                 @Override
                 public void handleEvent(Event evt) {
                 
-                org.w3c.dom.events.MouseEvent event = (org.w3c.dom.events.MouseEvent) evt;
+                org.w3c.dom.events.Event event = (org.w3c.dom.events.Event) evt;
                 HTMLElement target = (HTMLElement) event.getTarget();
-                //Send target to HTMLEvent for processing
-                
+                    System.out.println("target value: "+ event.getType());   
+                    
                 htmlEvent.processThis(ax, target, documentElement);
                 
                 
             }
             };
+                changeEventListener = new EventListener() {
 
+                @Override
+                public void handleEvent(Event evt) {
+                HTMLElement t = (HTMLElement) evt.getTarget();
+                System.out.println("Type = " + t.getNodeName());
+            
+                htmlEvent.processThis(ax, t, documentElement);
+                
+                
+                
+            }
+            };
         
                 inEventListener = new EventListener() {
 
                 @Override
                 public void handleEvent(Event evt) {
                 
-                 System.out.println("Focused in, add click and text change listener");
-                 //documentElement.addEventListener("change", changeEventListener, false);
                  documentElement.addEventListener("click", clickEventListener, false);
  
             }
@@ -427,16 +472,18 @@ public class AxBrowser {
 
                 documentElement.addEventListener("focusin", inEventListener, false);
 
+                
+                
                 outEventListener = new EventListener() {
 
                 @Override
                 public void handleEvent(Event evt) {
                 
                 //Remove Listeners on focus out.
-                System.out.println("Focused out, removing click and change listeners");
+                 System.out.println("Focused out, removing click and change listeners");
                  documentElement.removeEventListener("change", changeEventListener, false);
                  documentElement.removeEventListener("click", clickEventListener, false);
- 
+                 
                 }
                 };
 
@@ -453,6 +500,11 @@ public class AxBrowser {
        ax.browser.waitReady();
        ax.conscriptPane.setVisible(false);
        
+       //Get the history.
+       /*
+       HistoryListModel hlm = new HistoryListModel(ax);
+       ax.HistoryCombo.setModel(hlm);
+       */
        //Change the tab text to current page
         SwingUtilities.invokeLater(new Runnable() {
        

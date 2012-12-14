@@ -4,6 +4,7 @@
  */
 package edu.mass.qcc;
 
+import java.lang.reflect.Array;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
@@ -25,7 +26,18 @@ public class Recorder implements DocumentListener {
     //Recorder Tokens
     
     char COMMENT = '#';
-    String HEADER = "java -d32 -jar console/jruby-complete.jar -S irb -r console/console.rb";
+    String HEADER = ("[\"java\", \"#{File.dirname(__FILE__)}/../ruby/src/web_spec\","+"\n"
+                    +"\"#{File.dirname(__FILE__)}/../java/dist/webspec.jar\"].concat(Dir[" +"\n"
+                    +"\"#{File.dirname(__FILE__)}/../lib/*.jar\"]).each { |file| require file }"+"\n"
+                    +"WebSpec.extra_careful_pause_until_ready false"+"\n"
+                    +"@spec = WebSpec.new"+"\n"
+                    +"#Require the robot class"+"\n"
+                    +"require 'java'"+"\n"
+                    +"include_class 'java.awt.Robot'"+"\n"
+                    +"include_class 'java.awt.event.KeyEvent'"+"\n"
+                    +"robot = Robot.new"+"\n"
+            );
+    
     
     
     
@@ -36,18 +48,20 @@ public class Recorder implements DocumentListener {
     TokenParse tp = new TokenParse();
    
     HTMLEvents he = new HTMLEvents();
+    StringBuilder recBuffer = new StringBuilder();
     /*Recorder simple takes control of the GUI so
      *startRecording() and stopRecording() can use it.
      */
     Recorder(autoexplorer Ax){
     ax = Ax;
     doc = ax.consoleTextArea.getDocument();
+    
     //get the current token string
      
     }
     
     public int startRecording(){
-        //TODO add a check to see if we are already recordnig!
+        //TODO add a check to see if we are already recording!
         
         //Setup listener on console
         System.out.print("\nGrab Listener--->");
@@ -65,7 +79,10 @@ public class Recorder implements DocumentListener {
         ax.scriptTextArea.append(HEADER + ax.newline);
         ax.scriptTextArea.append("jrScript = WebSpec.new.ie" + ax.newline);
         ax.scriptTextArea.append("jrScript.open(\"" + ax.addressBar.getText() + "\") " + ax.newline);
-        
+        recBuffer.append(COMMENT).append("Starting New Script").append(ax.newline);
+        recBuffer.append(HEADER).append(ax.newline);
+        recBuffer.append("jrScript = WebSpec.new.ie").append(ax.newline);
+        recBuffer.append("jrScript.open(\"").append(ax.addressBar.getText()).append("\") ").append(ax.newline);
         
         
         return 0;
@@ -103,7 +120,14 @@ public class Recorder implements DocumentListener {
                     System.out.print(ax.newline + "InsertUpdate--->");       
                     String newText = ax.consoleTextArea.getText();
                     String tpString = tp.TokenParse(newText); 
+                    
+                    
+                    if (!"".equals(tpString)&&!tpString.contains("#")&&!tpString.contains("<Click Other>")){
                     ax.scriptTextArea.append(tpString + ax.newline);
+                    ax.scriptTextArea.append("sleep(2)" + ax.newline);
+                    this.recBuffer.append(tpString).append(ax.newline);
+                    this.recBuffer.append("sleep(2)").append(ax.newline);
+                    }
                     
                 }
                 

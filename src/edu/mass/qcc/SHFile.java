@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.text.Document;
 
 /**
  *
@@ -30,13 +31,15 @@ public class SHFile {
         ax = Ax;
         
     }
-    /*
-     * opens a file dialog.
+    /**
+     * @author ian
+     * Opens a file dialog window
+     * @return 
      */
     public int open(){
         
     //Get the users file selection and gives it the name fileChooser:
-        JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser("c:\\webspec\\webspec\\console\\");
         
         //Get the return value of fileChooser so that we can make sure
         //no errors have happened.
@@ -100,10 +103,11 @@ public class SHFile {
         
     // Grab the text from the text area and save it to a file
     String outTextToSave = ax.scriptTextArea.getText();   
-    
+    Document doc;
+    doc = ax.consoleTextArea.getDocument();
     //This time, open the fileChooser using the showSaveDialog
     //instead of showOpendialog
-    JFileChooser fileChooser = new JFileChooser();
+    JFileChooser fileChooser = new JFileChooser("c:\\webspec\\webspec\\console\\");
    
     //Again check for errors
         int returnValue = fileChooser.showSaveDialog(null);
@@ -114,14 +118,54 @@ public class SHFile {
           
                 
         //Try to print to the file using PrintWriter     
-    
+        
         try {
                 try (PrintWriter printWriter = new PrintWriter(selectedFile)) {
-                     printWriter.println(outTextToSave);
+                    printWriter.write(outTextToSave+"\n");
+                    //printWriter.println(outTextToSave+"\n");
                 }
             
             //Show file was saved in scriptArea
                 ax.scriptTextArea.setText("File was saved.");
+            
+            //Catch all errors and log them.
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(autoexplorer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        } 
+    return 0;
+    }
+    public int saveas(Recorder rec){
+        
+    // Grab the text from the text area and save it to a file
+    StringBuilder outTextToSave = rec.recBuffer;   
+    Document doc;
+    doc = ax.consoleTextArea.getDocument();
+    //This time, open the fileChooser using the showSaveDialog
+    //instead of showOpendialog
+    JFileChooser fileChooser = new JFileChooser("c:\\webspec\\webspec\\console\\");
+   
+    //Again check for errors
+        int returnValue = fileChooser.showSaveDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+        
+        //Get the selected file 
+        File selectedFile = fileChooser.getSelectedFile();
+          
+                
+        //Try to print to the file using PrintWriter     
+        
+        try {
+                try (PrintWriter printWriter = new PrintWriter(selectedFile)) {
+                    while (outTextToSave.length()!=-1){
+                    printWriter.write(outTextToSave+"\n");
+                    }
+                    
+                    
+                }
+            
+            //Show file was saved in scriptArea
+                ax.statusLabel.setText("File was saved.");
             
             //Catch all errors and log them.
         } catch (FileNotFoundException ex) {

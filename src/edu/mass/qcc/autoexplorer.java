@@ -56,7 +56,7 @@ public class autoexplorer extends javax.swing.JFrame {
         //Get a new browser. The browser that is returned will depend
         //on which OS is installed on the users computer.
         
-         browser = BrowserFactory.createBrowser(BrowserType.getPlatformSpecificBrowser());
+         browser = BrowserFactory.createBrowser(BrowserType.IE);
         
          //Make sure browser doesn't hang on javascript error
          browser.getServices().setPromptService(new DefaultPromptService(){
@@ -108,6 +108,7 @@ public class autoexplorer extends javax.swing.JFrame {
         backButton = new javax.swing.JButton();
         forwardButton = new javax.swing.JButton();
         addressBar = new java.awt.TextField();
+        HistoryCombo = new javax.swing.JComboBox();
         goButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
         stopBrowserButton = new javax.swing.JButton();
@@ -200,6 +201,7 @@ public class autoexplorer extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(addressBar);
+        jToolBar1.add(HistoryCombo);
 
         goButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/edu/mass/qcc/res/forward.png"))); // NOI18N
         goButton.setFocusable(false);
@@ -549,6 +551,7 @@ OptionPane op = new OptionPane();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JCheckBoxMenuItem CheckBoxShowConsole;
+    public javax.swing.JComboBox HistoryCombo;
     private javax.swing.JButton addTabButton;
     public java.awt.TextField addressBar;
     public javax.swing.JButton backButton;
