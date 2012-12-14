@@ -51,7 +51,7 @@ public class ScriptJUnit4Test {
         String resultDiv = script.getScriptForToken("<Click Div>", tokenDiv);
         assertEquals(expResultDiv,resultDiv);
         
-                //Test Option
+        //Test Option
         System.out.println("*ScriptJUnit4Test : getScriptForToken()");
         TokenParse tpOption = new TokenParse();
         String[] tokenOption = {"<Click Option>","","","James",""};
